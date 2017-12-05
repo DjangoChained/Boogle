@@ -70,4 +70,8 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+    <target name="-post-compile">
+        <copy file="dict-fr.txt" todir="${dist.dir}"/>
+    </target>
 </project>
