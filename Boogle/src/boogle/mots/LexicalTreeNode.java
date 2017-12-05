@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2017 rouchete and waxinp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package boogle.mots;
 
 import java.io.IOException;
@@ -10,6 +26,7 @@ import java.util.stream.Stream;
 /**
  * La classe LexicalTreeNode permet de stocker de façon compacte et d'accéder
  * rapidement à un ensemble de mots.
+ * @author rouchete
  */
 public class LexicalTreeNode {
 
@@ -49,6 +66,10 @@ public class LexicalTreeNode {
         return letter != null && isWord;
     }
 
+    /** 
+     * Définir l'état de mot valide d'un noeud.
+     * @param isWord État de mot valide à définir. True si le noeud représente la fin d'un mot valide.
+     */
     public void setIsWord(boolean isWord) {
         this.isWord = isWord;
     }
@@ -87,10 +108,18 @@ public class LexicalTreeNode {
         }
     }
 
+    /**
+     * Tester si le noeud a des noeuds enfants.
+     * @return True si le noeud a des noeuds enfants, False si c'est une impasse.
+     */
     public boolean hasChildren() {
         return Stream.of(children).anyMatch(l -> l != null);
     }
-    
+
+    /**
+     * Récupérer tous les noeuds enfants.
+     * @return Liste de noeuds enfants.
+     */
     public List<LexicalTreeNode> getAllChildren() {
         return Stream.of(children).filter(l -> l != null).collect(Collectors.toList());
     }
@@ -115,7 +144,7 @@ public class LexicalTreeNode {
      */
     public boolean contains(String word) {
         if(!containsChild(word.charAt(0))) return false;
-        else if(word.length() == 1 && letter.equals(word.charAt(0))) return true;
+        else if(word.length() == 1 && isWord && letter.equals(word.charAt(0))) return true;
         else return getChild(word.charAt(0)).contains(word.substring(1));
     }
 
