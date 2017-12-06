@@ -34,7 +34,6 @@ public class Settings {
         for (int i = 0; i < points.length; i++){
             this.points[i] = Integer.parseInt(tokens[i]);
         }
-        this.setProperty("rules-4x4.properties", "truc", "truc");
     }
     
     public String getfilePath(){return this.filePath;}
