@@ -73,5 +73,6 @@
     
     <target name="-post-compile">
         <copy file="dict-fr.txt" todir="${dist.dir}"/>
+        <copy file="rules-4x4.properties" todir="${dist.dir}"/>
     </target>
 </project>
