@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 lucidiot
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,14 @@
 package boogle.ui;
 
 /**
- * Décrit une interface utilisateur.
- * @author rouchete
+ * Interface utilisateur exploitant les entrées et sorties standard.
+ * @author lucidiot
  */
-public abstract class UserInterface {
-    public abstract void start();
+public class StdUserInterface extends UserInterface {
+
+    @Override
+    public void start() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
 }
