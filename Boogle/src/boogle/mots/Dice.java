@@ -7,33 +7,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Properties;
+import java.util.Random;
 
 /**
  *
  * @author waxinp
  */
 public class Dice {
-    private char[] faces = new char[6];
+    private char[] faces;
     
-    public Dice(String faces){
+    public Dice(String faces) {
+        this.faces = new char[faces.length()];
         int pos = 0;
-        for (int i = 0; i <= faces.length(); i += 2){
+        for (int i = 0; i < faces.length(); i++) {
             this.faces[pos++] = faces.charAt(i);
         }
     }
     
-    public static Dice[] loadDices(String pathToDices, int nbDices) throws IOException {
+    public static Dice[] loadDices(String pathToDices) throws IOException {
         int pos = 0;
-        Dice[] dices = new Dice[nbDices];
         List<String> lines = Files.readAllLines(Paths.get(pathToDices));
-        for (String line : lines){
-            dices[pos++] = new Dice(line);
-        }
+        Dice[] dices = new Dice[lines.size()];
+        for (String line : lines)
+            dices[pos++] = new Dice(line.replaceAll("[;,\t]", ""));
         return dices;
     }
+
+    public char roll() {
+        return faces[new Random().nextInt(faces.length)];
+    }
     
-    public String toString(){
+    public String toString() {
         return String.valueOf(faces);
     }
 }
