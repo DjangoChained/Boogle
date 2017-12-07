@@ -79,7 +79,7 @@ public class LexicalTreeNode {
      * @param c Lettre associée au noeud enfant.
      * @return Noeud enfant.
      */
-    protected LexicalTreeNode getChild(Character c) {
+    public LexicalTreeNode getChild(Character c) {
         return Stream.of(children).filter(l -> l != null && c.equals(l.getLetter())).findAny().get();
     }
 
@@ -88,7 +88,7 @@ public class LexicalTreeNode {
      * @param c Lettre associée au noeud enfant à rechercher.
      * @return True s'il y a un noeud enfant avec la lettre correspondante.
      */
-    protected boolean containsChild(Character c) {
+    public boolean containsChild(Character c) {
         return Stream.of(children).anyMatch(l -> l != null && c.equals(l.getLetter()));
     }
 
@@ -97,7 +97,7 @@ public class LexicalTreeNode {
      * @param c Lettre associée au noeud enfant.
      * @return Noeud enfant.
      */
-    protected LexicalTreeNode getOrCreateChild(Character c) {
+    public LexicalTreeNode getOrCreateChild(Character c) {
         if(containsChild(c)) return getChild(c);
         else {
             LexicalTreeNode l = new LexicalTreeNode(c);
@@ -148,6 +148,20 @@ public class LexicalTreeNode {
         else return getChild(word.charAt(0)).contains(word.substring(1));
     }
 
+    /**
+     * Représentation textuelle du noeud d'arbre lexical.
+     * @return Représentation textuelle des mots concevables depuis ce noeud.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if(this.isWord()) sb.append(this.letter).append("\n");
+        if(hasChildren())
+            if(letter != null) getAllChildren().stream().forEach(l -> sb.append(this.letter).append(l.toString()));
+            else getAllChildren().stream().forEach(l -> sb.append(l.toString()));
+        return sb.toString();
+    }
+    
     /**
      * Crée un arbre lexical qui contains tous les mots du fichier spécifié.
      *
