@@ -24,9 +24,9 @@ import java.util.List;
  * @author waxinp
  */
 public class Player {
-    private final String name;
-    private int score;
-    private final ArrayList<String> foundWords;
+    protected final String name;
+    protected int score;
+    protected final ArrayList<String> foundWords;
     
     public Player(String name) {
         this.name = name;
