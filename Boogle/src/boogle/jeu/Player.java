@@ -26,12 +26,12 @@ import java.util.List;
 public class Player {
     private final String name;
     private int score;
-    ArrayList<String> foundWords;
+    private final ArrayList<String> foundWords;
     
     public Player(String name) {
         this.name = name;
         this.score = 0;
-        this.foundWords = new ArrayList<String>();
+        this.foundWords = new ArrayList<>();
     }
     
     public void newWordFound(String word, int points) {
@@ -39,6 +39,10 @@ public class Player {
         score += points;
     }
 
+    public String getName() {
+        return this.name;
+    }
+    
     public int getScore() {
         return score;
     }
@@ -54,5 +58,10 @@ public class Player {
     public void reset() {
         foundWords.clear();
         score = 0;
+    }
+    
+    @Override
+    public String toString() {
+        return getName() + ", " + getScore() + " points";
     }
 }
