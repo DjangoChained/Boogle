@@ -6,9 +6,9 @@ package boogle.jeu;
  * 
  * @author waxinp
  */
-public class WordNotInLetterGridException extends Exception{
+public class WordNotInLetterGridException extends WordInputException {
     
-    public WordNotInLetterGridException() {}
+    public WordNotInLetterGridException() { }
     
     public WordNotInLetterGridException(String message) {
         super(message);

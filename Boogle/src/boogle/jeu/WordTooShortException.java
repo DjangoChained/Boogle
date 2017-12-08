@@ -6,8 +6,8 @@ package boogle.jeu;
  * 
  * @author waxinp
  */
-public class WordTooShortException extends Exception{
-    public WordTooShortException(){}
+public class WordTooShortException extends WordInputException {
+    public WordTooShortException() { }
     
     public WordTooShortException(String message){
         super(message);

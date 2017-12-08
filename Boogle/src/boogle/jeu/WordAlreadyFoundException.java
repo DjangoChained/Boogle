@@ -6,10 +6,10 @@ package boogle.jeu;
  * 
  * @author waxinp
  */
-public class WordAlreadyFoundException extends Exception {
-    public WordAlreadyFoundException() {}
+public class WordAlreadyFoundException extends WordInputException {
+    public WordAlreadyFoundException() { }
     
-    public WordAlreadyFoundException(String message){
+    public WordAlreadyFoundException(String message) {
         super(message);
     }
 }

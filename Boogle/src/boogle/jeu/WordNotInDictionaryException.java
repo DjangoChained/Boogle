@@ -6,10 +6,10 @@ package boogle.jeu;
  * 
  * @author waxinp
  */
-public class WordNotInDictionaryException extends Exception {
-    public WordNotInDictionaryException() {}
+public class WordNotInDictionaryException extends WordInputException {
+    public WordNotInDictionaryException() { }
     
-    public WordNotInDictionaryException(String message){
+    public WordNotInDictionaryException(String message) {
         super(message);
     }
 }
