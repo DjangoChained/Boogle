@@ -1,9 +1,10 @@
 package boogle.jeu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
+ * Décrit un joueur de Boggle.
  * @author waxinp
  */
 public class Player {
@@ -11,13 +12,13 @@ public class Player {
     private int score;
     ArrayList<String> foundWords;
     
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
         this.score = 0;
         this.foundWords = new ArrayList<String>();
     }
     
-    public void newWordFound(String word, int points){
+    public void newWordFound(String word, int points) {
         foundWords.add(word);
         score += points;
     }
@@ -26,15 +27,15 @@ public class Player {
         return score;
     }
 
-    public ArrayList<String> getFoundWords() {
+    public List<String> getFoundWords() {
         return foundWords;
     }
     
-    public boolean isAlreadyFound(String word){
+    public boolean isAlreadyFound(String word) {
         return foundWords.contains(word);
     }
     
-    public void reset(){
+    public void reset() {
         foundWords.clear();
         score = 0;
     }
