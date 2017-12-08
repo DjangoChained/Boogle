@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete and waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,25 @@
  */
 package boogle.ui;
 
+import boogle.jeu.Engine;
+
 /**
  * Interface utilisateur exploitant les entrées et sorties standard.
  * @author lucidiot
  */
 public class StdUserInterface extends UserInterface {
 
+    /**
+     * Instancier une interface utilisateur standard.
+     * @param engine Moteur de jeu à utiliser
+     */
+    public StdUserInterface(Engine engine) {
+        super(engine);
+    }
+    
+    /**
+     * Démarrer l'interface utilisateur standard.
+     */
     @Override
     public void start() {
         throw new UnsupportedOperationException("Not supported yet.");
