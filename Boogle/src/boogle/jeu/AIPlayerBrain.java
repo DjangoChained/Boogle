@@ -14,30 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package boogle.ui;
-
-import boogle.jeu.Engine;
+package boogle.jeu;
 
 /**
- * Interface utilisateur exploitant les entrées et sorties standard.
- * @author lucidiot
+ * Décrit une intelligence artificielle utilisable par AIPlayer.
+ * @author rouchete
  */
-public class StdUserInterface extends UserInterface {
-
+public interface AIPlayerBrain {
     /**
-     * Instancier une interface utilisateur standard.
-     * @param engine Moteur de jeu à utiliser
+     * Obtenir un mot valide saisi par l'IA.
+     * Si "null" est renvoyé, l'IA termine son tour.
+     * @param p Joueur IA concerné.
+     * @param e Moteur de jeu concerné.
+     * @return Mot valide, ou null pour terminer le tour.
      */
-    public StdUserInterface(Engine engine) {
-        super(engine);
-    }
-    
-    /**
-     * Démarrer l'interface utilisateur standard.
-     */
-    @Override
-    public void start() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
+    public String getInput(AIPlayer p, Engine e);
 }

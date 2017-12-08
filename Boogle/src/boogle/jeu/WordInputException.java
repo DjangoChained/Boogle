@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 lucidiot
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,30 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package boogle.ui;
-
-import boogle.jeu.Engine;
+package boogle.jeu;
 
 /**
- * Interface utilisateur exploitant les entrées et sorties standard.
+ * Exception de base pour les exceptions liées aux saisies utilisateur dans Boogle.
  * @author lucidiot
  */
-public class StdUserInterface extends UserInterface {
-
-    /**
-     * Instancier une interface utilisateur standard.
-     * @param engine Moteur de jeu à utiliser
-     */
-    public StdUserInterface(Engine engine) {
-        super(engine);
+public abstract class WordInputException extends Exception {
+    public WordInputException() { }
+    public WordInputException(String message) {
+        super(message);
     }
-    
-    /**
-     * Démarrer l'interface utilisateur standard.
-     */
-    @Override
-    public void start() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
 }

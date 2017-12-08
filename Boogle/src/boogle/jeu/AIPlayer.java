@@ -14,30 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package boogle.ui;
-
-import boogle.jeu.Engine;
+package boogle.jeu;
 
 /**
- * Interface utilisateur exploitant les entrées et sorties standard.
+ * Décrit un joueur ordinateur utilisant une intelligence artificielle.
  * @author lucidiot
  */
-public class StdUserInterface extends UserInterface {
-
-    /**
-     * Instancier une interface utilisateur standard.
-     * @param engine Moteur de jeu à utiliser
-     */
-    public StdUserInterface(Engine engine) {
-        super(engine);
+public class AIPlayer extends Player {
+    protected AIPlayerBrain brain;
+    public AIPlayer(String name, AIPlayerBrain brain) {
+        super(name);
+        this.brain = brain;
     }
-    
-    /**
-     * Démarrer l'interface utilisateur standard.
-     */
-    @Override
-    public void start() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
 }
