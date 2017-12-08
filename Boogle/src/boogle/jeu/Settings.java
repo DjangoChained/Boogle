@@ -5,6 +5,7 @@ package boogle.jeu;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -12,39 +13,47 @@ import java.util.Properties;
  * @author waxinp
  */
 public class Settings {
-    private int minSize;
-    private String dicesLocation, dictionaryLocation;
-    private final int[] points;
-    private FileInputStream fis;
     private Properties propertiesLoader = null;
-    private final String filePath;
-    
-    public Settings(String filePath) {
-        this.filePath = filePath;
-        this.points = new int[6];
-    }
+    private String filePath;
     
     public void loadFile(String filePath) throws IOException {
-        
-        this.fis = new FileInputStream(filePath);
+        this.filePath = filePath;
         this.propertiesLoader = new Properties();
-        this.propertiesLoader.load(fis);
-        this.minSize = Integer.parseInt(propertiesLoader.getProperty("minimum-size"));
-        this.dicesLocation = propertiesLoader.getProperty("dices");
-        this.dictionaryLocation = propertiesLoader.getProperty("dictionary");
-        String[] tokens = propertiesLoader.getProperty("points").split(",");
-        for (int i = 0; i < points.length; i++){
-            this.points[i] = Integer.parseInt(tokens[i]);
-        }
+        this.propertiesLoader.load(new FileInputStream(filePath));
     }
     
-    public String getfilePath(){return this.filePath;}
+    public String getFilePath() {
+        return this.filePath;
+    }
     
-    public void setProperty(String filePath, String varName, Object var) throws IOException {
-        if (this.propertiesLoader != null){
-            this.propertiesLoader.put(varName, var.toString());
-            FileOutputStream fos = new FileOutputStream(filePath);
-            this.propertiesLoader.store(fos, null);
-        }
+    public String get(String varName) throws IOException {
+        return this.propertiesLoader.getProperty(varName);
+    }
+    
+    public String get(String varName, String defaultValue) throws IOException {
+        return this.propertiesLoader.getProperty(varName, defaultValue);
+    }
+    
+    public void set(String varName, Object var) throws IOException {
+        if (this.propertiesLoader == null) return;
+        this.propertiesLoader.put(varName, var.toString());
+        FileOutputStream fos = new FileOutputStream(filePath);
+        this.propertiesLoader.store(fos, null);
+    }
+    
+    public int getWordMinSize() throws IOException {
+        return Integer.parseInt(get("minimum-size", "3"));
+    }
+    
+    public String getDicesLocation() throws IOException {
+        return get("dices");
+    }
+    
+    public String getDictionaryLocation() throws IOException {
+        return get("dictionary");
+    }
+    
+    public int[] getPoints() throws IOException {
+        return Arrays.stream(get("points").split(",")).mapToInt(i -> Integer.parseInt(i)).toArray();
     }
 }
