@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package boogle.jeu;
+import boogle.ui.*;
 
 /**
  * Classe principale.
@@ -27,7 +28,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Engine gameEngine = new Engine();
+        StdUserInterface userInterface = new StdUserInterface(gameEngine);
+        userInterface.start();
     }
-    
 }
