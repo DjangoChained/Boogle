@@ -17,6 +17,10 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
+import boogle.jeu.Player;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Interface utilisateur exploitant les entrées et sorties standard.
@@ -33,11 +37,57 @@ public class StdUserInterface extends UserInterface {
     }
     
     /**
+     * Récupérer la liste des joueurs
+     */
+    public void getPlayers(){
+        int nbPlayers = -1;
+        
+        Scanner reader = new Scanner(System.in);
+        while(nbPlayers < 0 || nbPlayers > 5){
+            System.out.print("Combien de joueurs ? (1 à 5) : ");
+            nbPlayers = reader.nextInt();
+        }
+        for(int i = 1; i < nbPlayers+1; i++){
+            String countEnd = (i>1)?"ème ":"er";
+            System.out.print("Entrez le nom du "+i+countEnd+" utilisateur : ");
+            /* Le code compris entre les commentaires suivants est immonde,
+            mais si j'essaye de le compacter de cette manière:
+            engine.addPlayer(new Player(reader.nextLine()), le 1er joueur est vide,
+            problème de buffer ?
+            */
+            String name = "";
+            while(name.equals(""))
+                name = reader.nextLine();
+            engine.addPlayer(new Player(name));
+            // fin de l'immondice
+        }
+        reader.close();
+    }
+    /**
      * Démarrer l'interface utilisateur standard.
      */
     @Override
     public void start() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("  ____                    _      \n" +
+" |  _ \\                  | |     \n" +
+" | |_) | ___   ___   __ _| | ___ \n" +
+" |  _ < / _ \\ / _ \\ / _` | |/ _ \\\n" +
+" | |_) | (_) | (_) | (_| | |  __/\n" +
+" |____/ \\___/ \\___/ \\__, |_|\\___|\n" +
+"                     __/ |       \n" +
+"                    |___/        \n" +
+"----------------------------------\n");
+        try {
+            engine.initialize("rules-4x4.properties");
+            StdUserInterface userInterface = new StdUserInterface(engine);
+            this.engine.newGame(4);
+            getPlayers();
+            for(Player p: engine.getPlayers())
+                System.out.println(p.getName());
+        } catch(IOException ex){
+            System.out.println(ex);
+            System.out.println("Un des fichiers de configuration n'a pas pu être chargé.");
+        }
     }
     
 }
