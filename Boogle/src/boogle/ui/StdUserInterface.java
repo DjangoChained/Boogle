@@ -18,6 +18,10 @@ package boogle.ui;
 
 import boogle.jeu.Engine;
 import boogle.jeu.Player;
+import boogle.jeu.WordAlreadyFoundException;
+import boogle.jeu.WordNotInDictionaryException;
+import boogle.jeu.WordNotInLetterGridException;
+import boogle.jeu.WordTooShortException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Scanner;
@@ -50,13 +54,13 @@ public class StdUserInterface extends UserInterface {
         }
         for(int i = 1; i < nbPlayers+1; i++){
             String countEnd = (i>1)?"ème ":"er";
-            System.out.print("Entrez le nom du "+i+countEnd+" joueur : ");
             /* Le code compris entre les commentaires suivants est immonde,
             mais si j'essaye de le compacter de cette manière:
             engine.addPlayer(new Player(reader.nextLine()), le 1er joueur est vide,
             problème de buffer ?
             */
             String name = "";
+            System.out.print("Entrez le nom du "+i+countEnd+" joueur : ");
             while(name.equals(""))
                 name = reader.nextLine();
             engine.addPlayer(new Player(name));
@@ -91,19 +95,28 @@ public class StdUserInterface extends UserInterface {
     public void nextTurn() {
     	if (engine.isInitialized()) {
             Scanner reader = new Scanner(System.in);
-            System.out.println(engine.getCurrentPlayer().getName()+", c'est à vous de jouer !\n"
+            System.out.println("\n"+engine.getCurrentPlayer().getName()+", c'est à vous de jouer !\n\n"
                                              + engine.getLetterGrid());
             String answer = "";
             while(!answer.equals("stop")) {
                 System.out.print("Proposez un mot ou \"stop\" pour arrêter votre tour : ");
                 answer = reader.nextLine();
-
-                try {
-                    engine.wordInput(answer);
-                    System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+" points !\n");
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                    ex.printStackTrace();
+                if (answer.equalsIgnoreCase("stop")) break;
+                if (answer.equals("")){
+                    System.out.println(engine.getLetterGrid());
+                } else {
+                    try {
+                        engine.wordInput(answer);
+                        System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+" points ! Vous totalisez "+engine.getCurrentPlayer().getScore()+" points");
+                    } catch(WordTooShortException ex){
+                        System.out.println("Ce mot est trop court");
+                    } catch(WordNotInDictionaryException ex){
+                        System.out.println("Ce mot n'existe pas");
+                    } catch(WordNotInLetterGridException ex){
+                        System.out.println("Ce mot n'est pas dans la grille");
+                    } catch(WordAlreadyFoundException ex){
+                        System.out.println("Vous avez déjà trouvé ce mot");
+                    }
                 }
             }
             engine.endTurn();
@@ -111,7 +124,7 @@ public class StdUserInterface extends UserInterface {
     }
     
     public void end() {
-    	System.out.println("La partie est terminée !\nVoici le palmarès : ");
+    	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
     	Collections.sort(engine.getPlayers(), Collections.reverseOrder());
     	int count = 1;
     	for(Player p : engine.getPlayers()) {

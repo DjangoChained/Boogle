@@ -36,7 +36,6 @@ public class Main {
         StdUserInterface userInterface = new StdUserInterface(gameEngine);
         userInterface.start();
         while(userInterface.isFinished() != true){
-            System.out.println("DANS LA BOUCLE - isFinished : "+userInterface.isFinished());
             userInterface.nextTurn();
         }
         userInterface.end();
