@@ -68,9 +68,9 @@ public class Engine {
     public void newGame(int gridSize) {
         assert 0 < players.size() && players.size() < 5;
 	this.letterGrid = new LetterGrid(gridSize);
-        this.currentPlayer = -1;
+        this.letterGrid.generate(dices);
+        this.currentPlayer = 0;
 	running = true;
-        endTurn();
     }
     
     /**

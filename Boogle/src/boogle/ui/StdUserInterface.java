@@ -19,21 +19,23 @@ package boogle.ui;
 import boogle.jeu.Engine;
 import boogle.jeu.Player;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
  * Interface utilisateur exploitant les entrées et sorties standard.
- * @author lucidiot
+ * @author waxinp
  */
 public class StdUserInterface extends UserInterface {
 
+    private final Scanner reader;
     /**
      * Instancier une interface utilisateur standard.
      * @param engine Moteur de jeu à utiliser
      */
     public StdUserInterface(Engine engine) {
         super(engine);
+        reader = new Scanner(System.in);
     }
     
     /**
@@ -42,14 +44,13 @@ public class StdUserInterface extends UserInterface {
     public void getPlayers(){
         int nbPlayers = -1;
         
-        Scanner reader = new Scanner(System.in);
         while(nbPlayers < 0 || nbPlayers > 5){
             System.out.print("Combien de joueurs ? (1 à 5) : ");
             nbPlayers = reader.nextInt();
         }
         for(int i = 1; i < nbPlayers+1; i++){
             String countEnd = (i>1)?"ème ":"er";
-            System.out.print("Entrez le nom du "+i+countEnd+" utilisateur : ");
+            System.out.print("Entrez le nom du "+i+countEnd+" joueur : ");
             /* Le code compris entre les commentaires suivants est immonde,
             mais si j'essaye de le compacter de cette manière:
             engine.addPlayer(new Player(reader.nextLine()), le 1er joueur est vide,
@@ -61,8 +62,8 @@ public class StdUserInterface extends UserInterface {
             engine.addPlayer(new Player(name));
             // fin de l'immondice
         }
-        reader.close();
     }
+    
     /**
      * Démarrer l'interface utilisateur standard.
      */
@@ -78,16 +79,59 @@ public class StdUserInterface extends UserInterface {
 "                    |___/        \n" +
 "----------------------------------\n");
         try {
-            engine.initialize("rules-4x4.properties");
-            StdUserInterface userInterface = new StdUserInterface(engine);
+            this.engine.initialize("rules-4x4.properties");
             this.engine.newGame(4);
             getPlayers();
-            for(Player p: engine.getPlayers())
-                System.out.println(p.getName());
         } catch(IOException ex){
             System.out.println(ex);
             System.out.println("Un des fichiers de configuration n'a pas pu être chargé.");
         }
+    }
+    
+    public void nextTurn() {
+    	if (engine.isInitialized()) {
+            Scanner reader = new Scanner(System.in);
+            System.out.println(engine.getCurrentPlayer().getName()+", c'est à vous de jouer !\n"
+                                             + engine.getLetterGrid());
+            String answer = "";
+            while(!answer.equals("stop")) {
+                System.out.print("Proposez un mot ou \"stop\" pour arrêter votre tour : ");
+                answer = reader.nextLine();
+
+                try {
+                    engine.wordInput(answer);
+                    System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+" points !\n");
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
+            }
+            engine.endTurn();
+    	}
+    }
+    
+    public void end() {
+    	System.out.println("La partie est terminée !\nVoici le palmarès : ");
+    	Collections.sort(engine.getPlayers(), Collections.reverseOrder());
+    	int count = 1;
+    	for(Player p : engine.getPlayers()) {
+    		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+" points et "
+    						  +p.getFoundWords().size()+" mots trouvés");
+    	}
+        reader.close();
+    }
+    
+    /**
+     * Savoir si une partie est terminée
+     */
+    public boolean isFinished() {
+    	return engine.isGameFinished();
+    }
+    
+    /**
+     * Savoir si une partie est en cours
+     */
+    public boolean isRunning() {
+    	return engine.isGameRunning();
     }
     
 }
