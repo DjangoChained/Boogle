@@ -80,8 +80,8 @@ public class StdUserInterface extends UserInterface {
 "----------------------------------\n");
         try {
             this.engine.initialize("rules-4x4.properties");
-            this.engine.newGame(4);
             getPlayers();
+            this.engine.newGame(4);
         } catch(IOException ex){
             System.out.println(ex);
             System.out.println("Un des fichiers de configuration n'a pas pu être chargé.");
@@ -103,6 +103,7 @@ public class StdUserInterface extends UserInterface {
                     System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+" points !\n");
                 } catch (Exception ex) {
                     System.out.println(ex);
+                    ex.printStackTrace();
                 }
             }
             engine.endTurn();
