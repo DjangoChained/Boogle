@@ -53,14 +53,14 @@ public class StdUserInterface extends UserInterface {
             nbPlayers = reader.nextInt();
         }
         for(int i = 1; i < nbPlayers+1; i++){
-            String countEnd = (i>1)?"ème ":"er";
+            String pluralize = (i>1)?"ème ":"er";
             /* Le code compris entre les commentaires suivants est immonde,
             mais si j'essaye de le compacter de cette manière:
             engine.addPlayer(new Player(reader.nextLine()), le 1er joueur est vide,
             problème de buffer ?
             */
             String name = "";
-            System.out.print("Entrez le nom du "+i+countEnd+" joueur : ");
+            System.out.print("Entrez le nom du "+i+pluralize+" joueur : ");
             while(name.equals(""))
                 name = reader.nextLine();
             engine.addPlayer(new Player(name));
@@ -107,7 +107,10 @@ public class StdUserInterface extends UserInterface {
                 } else {
                     try {
                         engine.wordInput(answer);
-                        System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+" points ! Vous totalisez "+engine.getCurrentPlayer().getScore()+" points");
+                        String pluralizeWordScore = (engine.getScore(answer)>1)?" points ":" point";
+                        String pluralizeTotalScore = (engine.getCurrentPlayer().getScore()>1)?" points ":" point";
+                        System.out.println("Bravo, vous gagnez "+engine.getScore(answer)+pluralizeWordScore
+                                          +" ! Vous totalisez "+engine.getCurrentPlayer().getScore()+pluralizeTotalScore);
                     } catch(WordTooShortException ex){
                         System.out.println("Ce mot est trop court");
                     } catch(WordNotInDictionaryException ex){
@@ -128,8 +131,10 @@ public class StdUserInterface extends UserInterface {
     	Collections.sort(engine.getPlayers(), Collections.reverseOrder());
     	int count = 1;
     	for(Player p : engine.getPlayers()) {
-    		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+" points et "
-    						  +p.getFoundWords().size()+" mots trouvés");
+                String pluralizePoints = (p.getScore()>1)?" points ":" point";
+                String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
+    		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints+" et "
+    						  +p.getFoundWords().size()+pluralizeWords);
     	}
         reader.close();
     }
