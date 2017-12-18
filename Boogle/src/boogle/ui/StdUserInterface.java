@@ -86,6 +86,7 @@ public class StdUserInterface extends UserInterface {
 "----------------------------------\n");
         try {
             this.engine.initialize("rules-4x4.properties");
+            printHighScores();
             getPlayers();
             this.engine.newGame(4);
         } catch(IOException ex){
@@ -133,22 +134,29 @@ public class StdUserInterface extends UserInterface {
     public void printHighScores(){
         ArrayList<Player> players = new ArrayList<>(engine.getMasterRace());
         Collections.sort(players, Collections.reverseOrder());
-        for(Player player : players){
-            
-        }
+        System.out.println("Les meilleurs scores sont : ");
+        printPlayers(players, true);
+    }
+    
+    public void printPlayers(ArrayList<Player> players, boolean isHighScore) {
+        int count = 1;
+        for(Player p : players) {
+                String pluralizePoints = (p.getScore()>1)?" points ":" point";
+                String res = count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints;
+                if(isHighScore == false){
+                    String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
+                    res += " et "+p.getFoundWords().size()+pluralizeWords;
+                }
+    		System.out.println(res);
+    	}
+        System.out.println();
     }
     
     public void end() {
     	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
-    	int count = 1;
-    	for(Player p : players) {
-                String pluralizePoints = (p.getScore()>1)?" points ":" point";
-                String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
-    		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints+" et "
-    						  +p.getFoundWords().size()+pluralizeWords);
-    	}
+    	printPlayers(players, false);
         reader.close();
     }
     
