@@ -15,10 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package boogle.jeu;
-import boogle.mots.*;
 import boogle.ui.*;
-import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Classe principale.
@@ -29,7 +26,6 @@ public class Main {
     /**
      * Point d'entrée de l'application.
      * @param args the command line arguments
-     * @throws java.io.IOException
      */
     public static void main(String[] args) {
         Engine gameEngine = new Engine();
