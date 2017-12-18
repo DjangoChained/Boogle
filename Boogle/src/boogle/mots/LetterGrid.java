@@ -55,10 +55,11 @@ public class LetterGrid {
 
     /**
      * Déterminer si un mot est valide selon les règles du Boggle.
-     * @param s Mot à rechercher.
+     * @param w Mot à rechercher.
      * @return True si la grille contient le mot recherché selon les règles du Boggle.
      */
-    public boolean validWord(String s) {
+    public boolean validWord(String w) {
+        String s = w.toUpperCase();
         if (s.length() < getSize() - 1) return false;
         for(int i = 0; i < getSize(); i++) for(int j = 0; j < getSize(); j++)
             if(grid[j][i] == s.charAt(0) && findSequence(s, i, j)) return true;

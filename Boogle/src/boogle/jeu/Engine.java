@@ -71,7 +71,7 @@ public class Engine {
         this.currentPlayer = -1;
 	running = true;
         endTurn();
-    }
+}
     
     /**
      * Tester si une partie est en cours.

@@ -17,13 +17,14 @@
 package boogle.jeu;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Décrit un joueur de Boggle.
  * @author waxinp
  */
-public class Player {
+public class Player implements Comparator<Player>, Comparable<Player> {
     protected final String name;
     protected int score;
     protected final ArrayList<String> foundWords;
@@ -64,4 +65,20 @@ public class Player {
     public String toString() {
         return getName() + ", " + getScore() + " points";
     }
+
+	@Override
+	public int compareTo(Player otherPlayer) {
+		/*if(this.score > otherPlayer.getScore()) return -1;
+		if(this.score < otherPlayer.getScore()) return 1;
+		return 0;*/
+		return Integer.compare(this.score, otherPlayer.getScore());
+	}
+	
+	@Override
+	public int compare(Player player1, Player player2) {
+		/*if(player1.getScore() > player2.getScore()) return -1;
+		if(player1.getScore() < player2.getScore()) return 1;
+		return 0;*/
+		return player1.getScore() - player2.getScore();
+	}
 }

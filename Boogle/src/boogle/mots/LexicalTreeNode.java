@@ -143,6 +143,7 @@ public class LexicalTreeNode {
      * de String ou si le mot n'est pas dans l'arbre lexical.
      */
     public boolean contains(String word) {
+        if(word.length() < 1) return isWord;
         if(!containsChild(word.charAt(0))) return false;
         else if(word.length() == 1 && isWord && letter.equals(word.charAt(0))) return true;
         else return getChild(word.charAt(0)).contains(word.substring(1));
