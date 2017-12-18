@@ -131,18 +131,16 @@ public class StdUserInterface extends UserInterface {
     }
     
     public void printHighScores(){
-        ArrayList<Player> players = new ArrayList();
-        Collections.copy(players, engine.getPlayers());
+        ArrayList<Player> players = new ArrayList<>(engine.getMasterRace());
         Collections.sort(players, Collections.reverseOrder());
-        /*for(Player player : Collections.sort(engine.getPlayers(), Collections.reverseOrder())){
+        for(Player player : players){
             
-        }*/
+        }
     }
     
     public void end() {
     	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
-        ArrayList<Player> players = new ArrayList();
-        Collections.copy(players, engine.getPlayers());
+        ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
     	int count = 1;
     	for(Player p : players) {
