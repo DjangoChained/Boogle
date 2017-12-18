@@ -120,7 +120,7 @@ public class Engine {
      * Obtenir tous les joueurs.
      * @return Liste des joueurs.
      */
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
 	return players;
     }
     
@@ -128,7 +128,7 @@ public class Engine {
      * Obtenir les meilleurs joueurs
      * @return Liste des meilleurs joueurs
      */
-    public List<Player> getMasterRace() {
+    public ArrayList<Player> getMasterRace() {
 	return masterRace;
     }
     

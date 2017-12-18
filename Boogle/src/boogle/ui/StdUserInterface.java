@@ -24,6 +24,7 @@ import boogle.jeu.WordNotInLetterGridException;
 import boogle.jeu.WordTooShortException;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -129,11 +130,22 @@ public class StdUserInterface extends UserInterface {
     	}
     }
     
+    public void printHighScores(){
+        ArrayList<Player> players = new ArrayList();
+        Collections.copy(players, engine.getPlayers());
+        Collections.sort(players, Collections.reverseOrder());
+        /*for(Player player : Collections.sort(engine.getPlayers(), Collections.reverseOrder())){
+            
+        }*/
+    }
+    
     public void end() {
     	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
-    	Collections.sort(engine.getPlayers(), Collections.reverseOrder());
+        ArrayList<Player> players = new ArrayList();
+        Collections.copy(players, engine.getPlayers());
+        Collections.sort(players, Collections.reverseOrder());
     	int count = 1;
-    	for(Player p : engine.getPlayers()) {
+    	for(Player p : players) {
                 String pluralizePoints = (p.getScore()>1)?" points ":" point";
                 String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
     		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints+" et "
