@@ -23,6 +23,7 @@ import boogle.jeu.WordNotInDictionaryException;
 import boogle.jeu.WordNotInLetterGridException;
 import boogle.jeu.WordTooShortException;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -48,7 +49,7 @@ public class StdUserInterface extends UserInterface {
     public void getPlayers(){
         int nbPlayers = -1;
         
-        while(nbPlayers < 0 || nbPlayers > 5){
+        while(nbPlayers <= 0 || nbPlayers > 5){
             System.out.print("Combien de joueurs ? (1 à 5) : ");
             nbPlayers = reader.nextInt();
         }
@@ -100,7 +101,9 @@ public class StdUserInterface extends UserInterface {
             String answer = "";
             while(!answer.equals("stop")) {
                 System.out.print("Proposez un mot ou \"stop\" pour arrêter votre tour : ");
-                answer = reader.nextLine();
+                answer = Normalizer.normalize(reader.nextLine(), Normalizer.Form.NFD)
+                        .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+                        .replaceAll("[^a-zA-Z]+", "");
                 if (answer.equalsIgnoreCase("stop")) break;
                 if (answer.equals("")){
                     System.out.println(engine.getLetterGrid());
