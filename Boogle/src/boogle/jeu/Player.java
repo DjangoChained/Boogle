@@ -35,6 +35,12 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         this.foundWords = new ArrayList<>();
     }
     
+    public Player(String name, int score) {
+        this.name = name;
+        this.score = score;
+        this.foundWords = null;
+    }
+    
     public void newWordFound(String word, int points) {
         foundWords.add(word);
         score += points;

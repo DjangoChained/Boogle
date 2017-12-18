@@ -1,0 +1,3 @@
+pierant,10
+machin,5
+truc,2
