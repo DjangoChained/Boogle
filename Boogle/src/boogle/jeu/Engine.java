@@ -27,7 +27,6 @@ public class Engine {
     private boolean running = false;
     private boolean finished = false;
     private final ArrayList<Player> players;
-    private ArrayList<Player> masterRace;
     private final Settings settings;
     private Dice[] dices;
     private LetterGrid letterGrid;
@@ -37,7 +36,6 @@ public class Engine {
 
     public Engine() {
 	this.players = new ArrayList<>();
-        this.masterRace = new ArrayList<>();
         this.settings = new Settings();
     }
 
@@ -49,7 +47,6 @@ public class Engine {
     public void initialize(String configPath) throws IOException {
         settings.loadFile(configPath);
         this.dices = Dice.loadDices(settings.getDicesLocation());
-        this.masterRace = HighscoresManager.loadBestPlayers(settings.getHighscoresLocation());
         this.dict = LexicalTreeNode.load(settings.getDictionaryLocation());
         this.minWordSize = settings.getWordMinSize();
         this.points = settings.getPoints();
@@ -124,13 +121,7 @@ public class Engine {
 	return players;
     }
     
-    /**
-     * Obtenir les meilleurs joueurs
-     * @return Liste des meilleurs joueurs
-     */
-    public ArrayList<Player> getMasterRace() {
-	return masterRace;
-    }
+    
     
     /**
      * Effacer tous les joueurs.
@@ -174,6 +165,15 @@ public class Engine {
     public int getScore(String word) {
         return word.length() < this.minWordSize ? 0
                 : this.points[Math.min(word.length() - this.minWordSize, points.length - 1)];   
+    }
+    
+    /**
+     * Obtenir le chemin vers le fichier des meilleurs scores
+     * @return le chemin vers le fichier des meilleurs scores
+     * @throws IOException 
+     */
+    public String getHighscoresLocation() throws IOException{
+        return settings.getHighscoresLocation();
     }
     
     /**

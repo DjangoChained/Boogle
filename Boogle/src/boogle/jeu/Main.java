@@ -31,7 +31,7 @@ public class Main {
      * @param args the command line arguments
      * @throws java.io.IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Engine gameEngine = new Engine();
         StdUserInterface userInterface = new StdUserInterface(gameEngine);
         userInterface.start();

@@ -17,6 +17,7 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
+import boogle.jeu.HighscoresManager;
 import boogle.jeu.Player;
 import boogle.jeu.WordAlreadyFoundException;
 import boogle.jeu.WordNotInDictionaryException;
@@ -132,10 +133,12 @@ public class StdUserInterface extends UserInterface {
     }
     
     public void printHighScores(){
-        ArrayList<Player> players = new ArrayList<>(engine.getMasterRace());
+        ArrayList<Player> players = new ArrayList<>(HighscoresManager.getMasterRace());
         Collections.sort(players, Collections.reverseOrder());
-        System.out.println("Les meilleurs scores sont : ");
-        printPlayers(players, true);
+        if(players.size() > 0) {
+            System.out.println("Les meilleurs scores sont : ");
+            printPlayers(players, true);
+        } else System.out.println("Aucun meilleurs scores pour l'instant...\n");
     }
     
     public void printPlayers(ArrayList<Player> players, boolean isHighScore) {
@@ -152,10 +155,15 @@ public class StdUserInterface extends UserInterface {
         System.out.println();
     }
     
-    public void end() {
+    public void end() throws IOException {
     	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
+        try {
+            HighscoresManager.writeBestPlayers(engine.getHighscoresLocation());
+        } catch (IOException ex){
+            System.out.println("Erreur lors de l'écriture des meilleurs scores");
+        }
     	printPlayers(players, false);
         reader.close();
     }
