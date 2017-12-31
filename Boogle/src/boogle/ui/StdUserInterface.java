@@ -91,6 +91,10 @@ public class StdUserInterface extends UserInterface {
             printHighScores();
             getPlayers();
             this.engine.newGame(4);
+            while(this.isFinished() != true){
+                this.nextTurn();
+            }
+            this.end();
         } catch(IOException ex){
             System.out.println(ex);
             System.out.println("Un des fichiers de configuration n'a pas pu être chargé.");
