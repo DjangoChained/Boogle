@@ -87,6 +87,7 @@ public class StdUserInterface extends UserInterface {
 "----------------------------------\n");
         try {
             this.engine.initialize("rules-4x4.properties");
+            HighscoresManager.loadBestPlayers(engine.getHighscoresLocation());
             printHighScores();
             getPlayers();
             this.engine.newGame(4);

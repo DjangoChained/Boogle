@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class HighscoresManager {
     
-    private static ArrayList<Player> bestPlayers = new ArrayList<>();;
+    private static ArrayList<Player> bestPlayers = new ArrayList<>();
     /**
      * Charger les meilleurs scores enregistrés.
      * @param pathToScores chemin vers le fichier contenant les meilleurs scores
