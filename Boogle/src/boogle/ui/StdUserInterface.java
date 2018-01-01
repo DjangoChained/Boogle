@@ -139,7 +139,6 @@ public class StdUserInterface extends UserInterface {
     
     public void printHighScores(){
         ArrayList<Player> players = new ArrayList<>(HighscoresManager.getMasterRace());
-        Collections.sort(players, Collections.reverseOrder());
         if(players.size() > 0) {
             System.out.println("Les meilleurs scores sont : ");
             printPlayers(players, true);
@@ -164,12 +163,15 @@ public class StdUserInterface extends UserInterface {
     	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
+        printPlayers(players, false);
+        for (Player p : players){
+            if (HighscoresManager.isHighEnough(p.getScore())) HighscoresManager.addNewHighScore(p);
+        }
         try {
             HighscoresManager.writeBestPlayers(engine.getHighscoresLocation());
         } catch (IOException ex){
             System.out.println("Erreur lors de l'écriture des meilleurs scores");
         }
-    	printPlayers(players, false);
         reader.close();
     }
     
