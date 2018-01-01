@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -53,7 +54,12 @@ public class StdUserInterface extends UserInterface {
         
         while(nbPlayers <= 0 || nbPlayers > 5){
             System.out.print("Combien de joueurs ? (1 à 5) : ");
-            nbPlayers = reader.nextInt();
+            try {
+                nbPlayers = reader.nextInt();
+            } catch (InputMismatchException ex){
+                System.out.println("Vous devez entrer un entier");
+                reader.next();
+            }
         }
         for(int i = 1; i < nbPlayers+1; i++){
             String pluralize = (i>1)?"ème ":"er";
