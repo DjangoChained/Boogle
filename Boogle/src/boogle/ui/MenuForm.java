@@ -17,20 +17,26 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
-import java.awt.event.WindowEvent;
+import java.awt.Window;
+import java.util.stream.Stream;
+import javax.swing.JOptionPane;
 
 /**
  * Formulaire de menu principal.
  * @author rouchete
  */
-public class MenuForm extends javax.swing.JFrame {
+public class MenuForm extends javax.swing.JDialog {
 
     private final Engine engine;
+    private Runnable readyToPlay;
+    
     /**
      * Creates new form MenuForm
      * @param engine Game engine to use
      */
     public MenuForm(Engine engine) {
+        super((Window)null);
+        setModal(true);
         this.engine = engine;
         initComponents();
     }
@@ -59,7 +65,7 @@ public class MenuForm extends javax.swing.JFrame {
         exitButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         titleLabel.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
@@ -170,6 +176,11 @@ public class MenuForm extends javax.swing.JFrame {
         playButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
         playButton.setForeground(new java.awt.Color(255, 51, 51));
         playButton.setText("JOUER");
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -181,9 +192,28 @@ public class MenuForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void onReadyToPlay(Runnable r) {
+        this.readyToPlay = r;
+    }
+    
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+        engine.clearPlayers();
+        Stream.of(playerNameField1, playerNameField2, playerNameField3, playerNameField4, playerNameField5)
+                .filter(field -> !field.getText().trim().isEmpty())
+                .forEach(field -> engine.createPlayer(field.getText().trim()));
+        if(engine.getPlayers().size() < 1) {
+            JOptionPane.showMessageDialog(this, "Au moins un nom de joueur doit être saisi.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            this.setVisible(false);
+            readyToPlay.run();
+        }
+    }//GEN-LAST:event_playButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exitButton;
     private javax.swing.JButton playButton;

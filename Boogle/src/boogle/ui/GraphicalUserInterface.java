@@ -34,10 +34,20 @@ public class GraphicalUserInterface extends UserInterface {
     
     public GraphicalUserInterface(Engine e) {
         super(e);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ScoresForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         this.menuForm = new MenuForm(e);
         this.masterRaceForm = new MasterRaceForm();
         this.scoresForm = new ScoresForm(e);
         this.gameForm = new GameForm(e);
+        this.menuForm.onReadyToPlay(() -> { engine.newGame(4); gameForm.setVisible(true); });
     }
     
     @Override
@@ -49,10 +59,12 @@ public class GraphicalUserInterface extends UserInterface {
                 JOptionPane.showMessageDialog(null, i.getMessage(), "Erreur de chargement", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            menuForm.setVisible(true);
         } catch (Exception e) {
             StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            JOptionPane.showMessageDialog(null, e.getMessage() + "\n" + sw.toString(), "Erreur inattendue", JOptionPane.ERROR_MESSAGE);
+            System.err.println(sw.toString());
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage() + "\n" + sw.toString(), "Erreur inattendue", JOptionPane.ERROR_MESSAGE);
         }
     }
     
