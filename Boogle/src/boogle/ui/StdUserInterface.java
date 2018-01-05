@@ -17,6 +17,7 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
+import boogle.jeu.HighscoresManager;
 import boogle.jeu.Player;
 import boogle.jeu.WordAlreadyFoundException;
 import boogle.jeu.WordNotInDictionaryException;
@@ -24,7 +25,9 @@ import boogle.jeu.WordNotInLetterGridException;
 import boogle.jeu.WordTooShortException;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -51,7 +54,12 @@ public class StdUserInterface extends UserInterface {
         
         while(nbPlayers <= 0 || nbPlayers > 5){
             System.out.print("Combien de joueurs ? (1 à 5) : ");
-            nbPlayers = reader.nextInt();
+            try {
+                nbPlayers = reader.nextInt();
+            } catch (InputMismatchException ex){
+                System.out.println("Vous devez entrer un entier");
+                reader.next();
+            }
         }
         for(int i = 1; i < nbPlayers+1; i++){
             String pluralize = (i>1)?"ème ":"er";
@@ -85,8 +93,14 @@ public class StdUserInterface extends UserInterface {
 "----------------------------------\n");
         try {
             this.engine.initialize("rules-4x4.properties");
+            HighscoresManager.loadBestPlayers(engine.getHighscoresLocation());
+            printHighScores();
             getPlayers();
             this.engine.newGame(4);
+            while(this.isFinished() != true){
+                this.nextTurn();
+            }
+            this.end();
         } catch(IOException ex){
             System.out.println(ex);
             System.out.println("Un des fichiers de configuration n'a pas pu être chargé.");
@@ -129,16 +143,41 @@ public class StdUserInterface extends UserInterface {
     	}
     }
     
-    public void end() {
-    	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
-    	Collections.sort(engine.getPlayers(), Collections.reverseOrder());
-    	int count = 1;
-    	for(Player p : engine.getPlayers()) {
+    public void printHighScores(){
+        ArrayList<Player> players = new ArrayList<>(HighscoresManager.getMasterRace());
+        if(players.size() > 0) {
+            System.out.println("Les meilleurs scores sont : ");
+            printPlayers(players, true);
+        } else System.out.println("Aucun meilleurs scores pour l'instant...\n");
+    }
+    
+    public void printPlayers(ArrayList<Player> players, boolean isHighScore) {
+        int count = 1;
+        for(Player p : players) {
                 String pluralizePoints = (p.getScore()>1)?" points ":" point";
-                String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
-    		System.out.println(count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints+" et "
-    						  +p.getFoundWords().size()+pluralizeWords);
+                String res = count++ + ". "+p.getName()+" avec "+p.getScore()+pluralizePoints;
+                if(isHighScore == false){
+                    String pluralizeWords = (p.getFoundWords().size()>1)?" mots trouvés ":" mot trouvé";
+                    res += " et "+p.getFoundWords().size()+pluralizeWords;
+                }
+    		System.out.println(res);
     	}
+        System.out.println();
+    }
+    
+    public void end() throws IOException {
+    	System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
+        ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
+        Collections.sort(players, Collections.reverseOrder());
+        printPlayers(players, false);
+        for (Player p : players){
+            if (HighscoresManager.isHighEnough(p.getScore())) HighscoresManager.addNewHighScore(p);
+        }
+        try {
+            HighscoresManager.writeBestPlayers(engine.getHighscoresLocation());
+        } catch (IOException ex){
+            System.out.println("Erreur lors de l'écriture des meilleurs scores");
+        }
         reader.close();
     }
     

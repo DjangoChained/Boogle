@@ -35,6 +35,12 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         this.foundWords = new ArrayList<>();
     }
     
+    public Player(String name, int score) {
+        this.name = name;
+        this.score = score;
+        this.foundWords = null;
+    }
+    
     public void newWordFound(String word, int points) {
         foundWords.add(word);
         score += points;
@@ -68,17 +74,11 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
 	@Override
 	public int compareTo(Player otherPlayer) {
-		/*if(this.score > otherPlayer.getScore()) return -1;
-		if(this.score < otherPlayer.getScore()) return 1;
-		return 0;*/
 		return Integer.compare(this.score, otherPlayer.getScore());
 	}
 	
 	@Override
 	public int compare(Player player1, Player player2) {
-		/*if(player1.getScore() > player2.getScore()) return -1;
-		if(player1.getScore() < player2.getScore()) return 1;
-		return 0;*/
 		return player1.getScore() - player2.getScore();
 	}
 }

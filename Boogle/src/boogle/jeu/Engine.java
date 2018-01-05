@@ -117,9 +117,11 @@ public class Engine {
      * Obtenir tous les joueurs.
      * @return Liste des joueurs.
      */
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
 	return players;
     }
+    
+    
     
     /**
      * Effacer tous les joueurs.
@@ -163,6 +165,15 @@ public class Engine {
     public int getScore(String word) {
         return word.length() < this.minWordSize ? 0
                 : this.points[Math.min(word.length() - this.minWordSize, points.length - 1)];   
+    }
+    
+    /**
+     * Obtenir le chemin vers le fichier des meilleurs scores
+     * @return le chemin vers le fichier des meilleurs scores
+     * @throws IOException 
+     */
+    public String getHighscoresLocation() throws IOException{
+        return settings.getHighscoresLocation();
     }
     
     /**

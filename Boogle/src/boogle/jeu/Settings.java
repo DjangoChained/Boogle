@@ -68,6 +68,10 @@ public class Settings {
         return get("dictionary");
     }
     
+    public String getHighscoresLocation() throws IOException {
+        return get("highscores");
+    }
+    
     public int[] getPoints() throws IOException {
         return Arrays.stream(get("points").split(",")).mapToInt(i -> Integer.parseInt(i)).toArray();
     }

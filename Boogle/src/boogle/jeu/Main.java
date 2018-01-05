@@ -27,13 +27,9 @@ public class Main {
      * Point d'entrée de l'application.
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Engine gameEngine = new Engine();
         StdUserInterface userInterface = new StdUserInterface(gameEngine);
         userInterface.start();
-        while(userInterface.isFinished() != true){
-            userInterface.nextTurn();
-        }
-        userInterface.end();
     }
 }
