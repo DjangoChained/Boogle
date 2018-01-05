@@ -16,6 +16,7 @@
  */
 package boogle.jeu;
 import boogle.ui.*;
+import java.util.stream.Stream;
 
 /**
  * Classe principale.
@@ -27,9 +28,11 @@ public class Main {
      * Point d'entrée de l'application.
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Engine gameEngine = new Engine();
-        StdUserInterface userInterface = new StdUserInterface(gameEngine);
-        userInterface.start();
+        UserInterface ui;
+        if(Stream.of(args).anyMatch(a -> a.toLowerCase().contains("std"))) ui = new StdUserInterface(gameEngine);
+        else ui = new GraphicalUserInterface(gameEngine);
+        ui.start();
     }
 }

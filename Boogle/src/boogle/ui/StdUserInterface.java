@@ -93,13 +93,10 @@ public class StdUserInterface extends UserInterface {
 "----------------------------------\n");
         try {
             this.engine.initialize("rules-4x4.properties");
-            HighscoresManager.loadBestPlayers(engine.getHighscoresLocation());
             printHighScores();
             getPlayers();
             this.engine.newGame(4);
-            while(this.isFinished() != true){
-                this.nextTurn();
-            }
+            while(!engine.isGameFinished()) this.nextTurn();
             this.end();
         } catch(IOException ex){
             System.out.println(ex);
@@ -109,7 +106,6 @@ public class StdUserInterface extends UserInterface {
     
     public void nextTurn() {
     	if (engine.isInitialized()) {
-            Scanner reader = new Scanner(System.in);
             System.out.println("\n"+engine.getCurrentPlayer().getName()+", c'est à vous de jouer !\n\n"
                                              + engine.getLetterGrid());
             String answer = "";
@@ -170,29 +166,15 @@ public class StdUserInterface extends UserInterface {
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
         printPlayers(players, false);
+        // TODO: Refactoring pour isoler les meilleurs scores de l'interface
         for (Player p : players){
             if (HighscoresManager.isHighEnough(p.getScore())) HighscoresManager.addNewHighScore(p);
         }
         try {
-            HighscoresManager.writeBestPlayers(engine.getHighscoresLocation());
-        } catch (IOException ex){
+            HighscoresManager.writeBestPlayers("highscores.txt");
+        } catch (IOException ex) {
             System.out.println("Erreur lors de l'écriture des meilleurs scores");
         }
         reader.close();
     }
-    
-    /**
-     * Savoir si une partie est terminée
-     */
-    public boolean isFinished() {
-    	return engine.isGameFinished();
-    }
-    
-    /**
-     * Savoir si une partie est en cours
-     */
-    public boolean isRunning() {
-    	return engine.isGameRunning();
-    }
-    
 }
