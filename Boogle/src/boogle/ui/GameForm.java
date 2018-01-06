@@ -17,6 +17,13 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
+import boogle.jeu.WordAlreadyFoundException;
+import boogle.jeu.WordNotInDictionaryException;
+import boogle.jeu.WordNotInLetterGridException;
+import boogle.jeu.WordTooShortException;
+import java.util.stream.Stream;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Fenêtre d'une partie.
@@ -25,6 +32,7 @@ import boogle.jeu.Engine;
 public class GameForm extends javax.swing.JFrame {
 
     private final Engine engine;
+    private Runnable gameEnd;
     /**
      * Créer une fenêtre de jeu.
      * @param engine Moteur de jeu à utiliser.
@@ -34,6 +42,45 @@ public class GameForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void onGameEnd(Runnable r) {
+        this.gameEnd = r;
+    }
+    
+    private void refresh() {
+        if(!engine.isGameRunning() || !this.isVisible()) return;
+        refresh(engine.getCurrentPlayer().getName() + ", c'est votre tour");
+    }
+
+    private void refresh(String message) {
+        if(!engine.isGameRunning() || !this.isVisible()) return;
+        this.statusLabel.setText(message);
+        // Liste des joueurs
+        DefaultListModel pl = new DefaultListModel();
+        this.engine.getPlayers().forEach(p -> pl.addElement(p));
+        this.playersList.setModel(pl);
+        // Liste des mots trouvés par le joueur en cours
+        DefaultListModel fwl = new DefaultListModel();
+        this.engine.getCurrentPlayer().getFoundWords().forEach(w -> fwl.addElement(w.toUpperCase()));
+        this.foundWordsList.setModel(fwl);
+        // Affichage de la grille
+        this.gridTable.setModel(new DefaultTableModel(this.engine.getLetterGrid().toObjectArray(), Stream.generate(() -> "").limit(this.engine.getLetterGrid().getSize()).toArray()) {
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return java.lang.Character.class;
+            }
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void setVisible(boolean bln) {
+        super.setVisible(bln);
+        if(bln) refresh();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,32 +92,41 @@ public class GameForm extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        foundWordsList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        playersList = new javax.swing.JList<>();
+        wordInputField = new javax.swing.JTextField();
+        statusLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        gridTable = new javax.swing.JTable();
+        foundWordsLabel = new javax.swing.JLabel();
+        playersLabel = new javax.swing.JLabel();
+        endTurnButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 440));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jList1.setFocusable(false);
-        jScrollPane1.setViewportView(jList1);
+        foundWordsList.setFocusable(false);
+        jScrollPane1.setViewportView(foundWordsList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weighty = 0.2;
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        jList2.setFocusable(false);
-        jScrollPane2.setViewportView(jList2);
+        playersList.setFocusable(false);
+        playersList.setCellRenderer(new javax.swing.DefaultListCellRenderer() {
+            public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                java.awt.Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                c.setFont(c.getFont().deriveFont(engine.getCurrentPlayer().equals(value) ? java.awt.Font.BOLD : java.awt.Font.PLAIN));
+                return c;
+            }
+        });
+        jScrollPane2.setViewportView(playersList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -79,25 +135,32 @@ public class GameForm extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(jScrollPane2, gridBagConstraints);
+
+        wordInputField.setFont(wordInputField.getFont().deriveFont(wordInputField.getFont().getSize()+8f));
+        wordInputField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onWordInput(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.1;
-        getContentPane().add(jTextField1, gridBagConstraints);
+        getContentPane().add(wordInputField, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
-        jLabel1.setText("Humain, c'est votre tour");
-        jLabel1.setFocusable(false);
+        statusLabel.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        statusLabel.setText("Humain, c'est votre tour");
+        statusLabel.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
-        getContentPane().add(jLabel1, gridBagConstraints);
+        getContentPane().add(statusLabel, gridBagConstraints);
 
-        jTable1.setFont(new java.awt.Font("DejaVu Sans", 0, 36)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        gridTable.setFont(new java.awt.Font("DejaVu Sans", 0, 36)); // NOI18N
+        gridTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -105,50 +168,103 @@ public class GameForm extends javax.swing.JFrame {
 
             }
         ));
-        jTable1.setAutoscrolls(false);
-        jTable1.setFocusable(false);
-        jTable1.setRequestFocusEnabled(false);
-        jTable1.setRowSelectionAllowed(false);
-        jTable1.setShowHorizontalLines(true);
-        jTable1.setShowVerticalLines(true);
-        jTable1.getTableHeader().setResizingAllowed(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(jTable1);
+        gridTable.setAutoscrolls(false);
+        gridTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        gridTable.setFocusable(false);
+        gridTable.setRequestFocusEnabled(false);
+        gridTable.setRowHeight(50);
+        gridTable.setRowSelectionAllowed(false);
+        gridTable.setShowHorizontalLines(true);
+        gridTable.setShowVerticalLines(true);
+        gridTable.getTableHeader().setResizingAllowed(false);
+        gridTable.getTableHeader().setReorderingAllowed(false);
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( javax.swing.JLabel.CENTER );
+        gridTable.setDefaultRenderer(Character.class, centerRenderer);
+        gridTable.setDefaultRenderer(String.class, centerRenderer);
+        jScrollPane3.setViewportView(gridTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weightx = 0.5;
         getContentPane().add(jScrollPane3, gridBagConstraints);
 
-        jLabel2.setText("Mots trouvés");
-        jLabel2.setFocusable(false);
+        foundWordsLabel.setText("Mots trouvés");
+        foundWordsLabel.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(jLabel2, gridBagConstraints);
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        getContentPane().add(foundWordsLabel, gridBagConstraints);
 
-        jLabel3.setText("Joueurs");
-        jLabel3.setFocusable(false);
+        playersLabel.setText("Joueurs");
+        playersLabel.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        getContentPane().add(jLabel3, gridBagConstraints);
+        getContentPane().add(playersLabel, gridBagConstraints);
+
+        endTurnButton.setText("Fin du tour");
+        endTurnButton.setToolTipText("");
+        endTurnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endTurnButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(endTurnButton, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void onWordInput(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onWordInput
+        String word = java.text.Normalizer.normalize(this.wordInputField.getText().trim().toLowerCase(), java.text.Normalizer.Form.NFD)
+                        .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+                        .replaceAll("[^a-zA-Z]+", "");
+        if(word.isEmpty()) return;
+        try {
+            engine.wordInput(word);
+            String pluralizeWordScore = (engine.getScore(word) > 1) ? " points" : " point";
+            refresh(word.toUpperCase()+" : +"+engine.getScore(word)+pluralizeWordScore);
+        } catch(WordTooShortException ex){
+            refresh("Ce mot est trop court");
+        } catch(WordNotInDictionaryException ex){
+            refresh("Ce mot n'existe pas");
+        } catch(WordNotInLetterGridException ex){
+            refresh("Ce mot n'est pas dans la grille");
+        } catch(WordAlreadyFoundException ex){
+            refresh("Vous avez déjà trouvé ce mot");
+        }
+        this.wordInputField.setText("");
+    }//GEN-LAST:event_onWordInput
+
+    private void endTurnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTurnButtonActionPerformed
+        engine.endTurn();
+        if(engine.isGameFinished()) {
+            this.setVisible(false);
+            gameEnd.run();
+        } else {
+            this.wordInputField.requestFocus();
+            refresh();
+        }
+    }//GEN-LAST:event_endTurnButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
+    private javax.swing.JButton endTurnButton;
+    private javax.swing.JLabel foundWordsLabel;
+    private javax.swing.JList<String> foundWordsList;
+    private javax.swing.JTable gridTable;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel playersLabel;
+    private javax.swing.JList<String> playersList;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JTextField wordInputField;
     // End of variables declaration//GEN-END:variables
 }

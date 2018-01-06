@@ -66,6 +66,8 @@ public class MenuForm extends javax.swing.JDialog {
         playButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(400, 230));
+        setPreferredSize(new java.awt.Dimension(460, 300));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         titleLabel.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
@@ -205,10 +207,9 @@ public class MenuForm extends javax.swing.JDialog {
         Stream.of(playerNameField1, playerNameField2, playerNameField3, playerNameField4, playerNameField5)
                 .filter(field -> !field.getText().trim().isEmpty())
                 .forEach(field -> engine.createPlayer(field.getText().trim()));
-        if(engine.getPlayers().size() < 1) {
+        if(engine.getPlayers().size() < 1)
             JOptionPane.showMessageDialog(this, "Au moins un nom de joueur doit être saisi.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        } else {
+        else {
             this.setVisible(false);
             readyToPlay.run();
         }

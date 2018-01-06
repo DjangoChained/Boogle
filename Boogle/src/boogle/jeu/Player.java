@@ -66,19 +66,19 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         foundWords.clear();
         score = 0;
     }
-    
+
     @Override
     public String toString() {
         return getName() + ", " + getScore() + " points";
     }
 
-	@Override
-	public int compareTo(Player otherPlayer) {
-		return Integer.compare(this.score, otherPlayer.getScore());
-	}
-	
-	@Override
-	public int compare(Player player1, Player player2) {
-		return player1.getScore() - player2.getScore();
-	}
+    @Override
+    public int compareTo(Player otherPlayer) {
+            return Integer.compare(this.score, otherPlayer.getScore());
+    }
+
+    @Override
+    public int compare(Player player1, Player player2) {
+            return player1.getScore() - player2.getScore();
+    }
 }
