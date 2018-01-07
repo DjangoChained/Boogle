@@ -39,7 +39,7 @@ public class HighscoresManager {
      * Charger les meilleurs scores enregistrés.
      *
      * @param pathToScores chemin vers le fichier contenant les meilleurs scores
-     * @throws java.io.IOException
+     * @throws java.io.IOException Erreur lors de l'accès au fichier.
      */
     public static void loadBestPlayers(String pathToScores) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(pathToScores));
@@ -54,7 +54,7 @@ public class HighscoresManager {
      * Ecrire les meilleurs scores dans un fichier spécifié en paramètre
      *
      * @param pathToScores chemin vers le fichier contenant les meilleurs scores
-     * @throws java.io.IOException
+     * @throws java.io.IOException Erreur lors de l'enregistrement dans le fichier.
      */
     public static void writeBestPlayers(String pathToScores) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(pathToScores))) {

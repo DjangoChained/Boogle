@@ -36,7 +36,7 @@ public class Settings {
      * Charger la configuration depuis un fichier.
      *
      * @param filePath Chemin du fichier à utiliser.
-     * @throws IOException
+     * @throws IOException Erreur lors du chargement du fichier.
      */
     public void loadFile(String filePath) throws IOException {
         this.filePath = filePath;
@@ -80,7 +80,7 @@ public class Settings {
      *
      * @param varName Nom du paramètre.
      * @param var Nouvelle valeur du paramètre.
-     * @throws IOException
+     * @throws IOException Erreur lors de l'enregistrement du paramètre dans un fichier.
      */
     public void set(String varName, Object var) throws IOException {
         if (this.propertiesLoader == null) {

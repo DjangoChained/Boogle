@@ -214,7 +214,7 @@ public class LexicalTreeNode {
      *
      * @param fichier Fichier à analyser.
      * @return Arbre lexical contenant tous les mots du fichier spécifié.
-     * @throws java.io.IOException
+     * @throws java.io.IOException Erreur lors de l'accès au fichier.
      */
     public static LexicalTreeNode load(String fichier) throws IOException {
         LexicalTreeNode l = new LexicalTreeNode();

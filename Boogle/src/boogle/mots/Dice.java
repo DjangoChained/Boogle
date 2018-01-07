@@ -49,7 +49,7 @@ public class Dice {
      *
      * @param pathToDices Chemin d'accès vers le fichier de dés.
      * @return Tableau de dés chargés via le fichier.
-     * @throws IOException
+     * @throws IOException Erreur lors de l'accès au fichier.
      */
     public static Dice[] loadDices(String pathToDices) throws IOException {
         int pos = 0;

@@ -187,7 +187,7 @@ public class StdUserInterface extends UserInterface {
     /**
      * Gestion de fin de partie.
      *
-     * @throws IOException
+     * @throws IOException Erreur lors du traitement des meilleurs scores.
      */
     public void end() throws IOException {
         System.out.println("La partie est terminée !\n\nVoici le palmarès : ");
