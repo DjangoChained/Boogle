@@ -1,3 +1,5 @@
+lhoussaine,14
+lucidaine,13
 pierant,10
+lucidiot,7
 machin,5
-truc,2

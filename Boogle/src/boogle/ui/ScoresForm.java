@@ -16,21 +16,75 @@
  */
 package boogle.ui;
 
+import boogle.jeu.Engine;
 import java.awt.event.WindowEvent;
+import java.util.Collections;
+import java.util.PrimitiveIterator;
+import java.util.stream.IntStream;
+import javax.swing.table.TableModel;
 
 /**
- *
- * @author lucidiot
+ * Fenêtre de fin de partie.
+ * @author rouchete
  */
 public class ScoresForm extends javax.swing.JFrame {
 
+    private final Engine engine;
+    private Runnable onHighscoresButton, onBackButton;
     /**
      * Creates new form ScoresForm
+     * @param e Moteur de jeu à utiliser.
      */
-    public ScoresForm() {
+    public ScoresForm(Engine e) {
+        this.engine = e;
         initComponents();
     }
 
+    public void onHighscoresButton(Runnable r) {
+        this.onHighscoresButton = r;
+    }
+    
+    public void onBackButton(Runnable r) {
+        this.onBackButton = r;
+    }
+
+    @Override
+    public void setVisible(boolean bln) {
+        super.setVisible(bln);
+        if(bln) refresh();
+    }
+    
+    public void refresh() {
+        if(!engine.isGameFinished()) return;
+        jTable1.setModel(getScoreModel());
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(30);
+        jTable1.getColumnModel().getColumn(2).setMaxWidth(70);
+        jLabel1.setText(engine.getPlayers().stream().sorted(Collections.reverseOrder()).findFirst().get().getName() + " remporte la partie !");
+    }
+    
+    private TableModel getScoreModel() {
+        return new javax.swing.table.DefaultTableModel(getScoreData(), new String [] { "#", "Nom", "Score" }) {
+            Class[] types = new Class[] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            };
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
+    }
+    
+    public Object[][] getScoreData() {
+        PrimitiveIterator.OfInt counter = IntStream.iterate(1, i -> i + 1).iterator();
+        return engine.getPlayers().stream().sorted(Collections.reverseOrder()).map(p -> {
+            return new Object[] {counter.nextInt(), p.getName(), p.getScore()};
+        }).toArray(Object[][]::new);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,7 +102,8 @@ public class ScoresForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(400, 200));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
@@ -64,7 +119,7 @@ public class ScoresForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Rang", "Nom", "Score"
+                "#", "Nom", "Score"
             }
         ) {
             Class[] types = new Class [] {
@@ -96,6 +151,11 @@ public class ScoresForm extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
         jButton1.setText("Retour au menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -104,6 +164,11 @@ public class ScoresForm extends javax.swing.JFrame {
         getContentPane().add(jButton1, gridBagConstraints);
 
         jButton2.setText("Meilleurs scores");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -131,38 +196,14 @@ public class ScoresForm extends javax.swing.JFrame {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ScoresForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ScoresForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ScoresForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ScoresForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.onHighscoresButton.run();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new ScoresForm().setVisible(true);
-        });
-    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+        this.onBackButton.run();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

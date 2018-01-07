@@ -16,8 +16,13 @@
  */
 package boogle.ui;
 
+import boogle.jeu.HighscoresManager;
+import java.util.PrimitiveIterator;
+import java.util.stream.IntStream;
+import javax.swing.table.TableModel;
+
 /**
- *
+ * Formulaire de menu des meilleurs scores.
  * @author lucidiot
  */
 public class MasterRaceForm extends javax.swing.JFrame {
@@ -29,6 +34,16 @@ public class MasterRaceForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    @Override
+    public void setVisible(boolean bln) {
+        super.setVisible(bln);
+        if(bln) {
+            masterRaceTable.setModel(getMasterRaceModel());
+            masterRaceTable.getColumnModel().getColumn(0).setMaxWidth(30);
+            masterRaceTable.getColumnModel().getColumn(2).setMaxWidth(70);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,78 +54,51 @@ public class MasterRaceForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        masterRaceTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Meilleurs scores");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        masterRaceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "#", "Nom", "Score"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
-        }
+        ));
+        jScrollPane1.setViewportView(masterRaceTable);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private TableModel getMasterRaceModel() {
+        return new javax.swing.table.DefaultTableModel(getMasterRaceData(), new String [] { "#", "Nom", "Score" }) {
+            Class[] types = new Class[] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean[] { false, false, false };
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MasterRaceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MasterRaceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MasterRaceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MasterRaceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MasterRaceForm().setVisible(true);
-        });
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
     }
 
+    private Object[][] getMasterRaceData() {
+        PrimitiveIterator.OfInt counter = IntStream.iterate(1, i -> i + 1).iterator();
+        return HighscoresManager.getMasterRace().stream().map(p -> {
+            return new Object[] {counter.nextInt(), p.getName(), p.getScore()};
+        }).toArray(Object[][]::new);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable masterRaceTable;
     // End of variables declaration//GEN-END:variables
 }

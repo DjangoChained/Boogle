@@ -19,7 +19,6 @@ import boogle.mots.Dice;
 import boogle.mots.LetterGrid;
 import boogle.mots.LexicalTreeNode;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
 
 public class Engine {
@@ -50,6 +49,7 @@ public class Engine {
         this.dict = LexicalTreeNode.load(settings.getDictionaryLocation());
         this.minWordSize = settings.getWordMinSize();
         this.points = settings.getPoints();
+        HighscoresManager.loadBestPlayers(settings.getHighscoresLocation());
         this.initialized = true;
     }
     
@@ -168,15 +168,6 @@ public class Engine {
     }
     
     /**
-     * Obtenir le chemin vers le fichier des meilleurs scores
-     * @return le chemin vers le fichier des meilleurs scores
-     * @throws IOException 
-     */
-    public String getHighscoresLocation() throws IOException{
-        return settings.getHighscoresLocation();
-    }
-    
-    /**
      * Terminer le tour du joueur et passer au joueur suivant ou terminer la partie.
      */
     public void endTurn() {
@@ -185,5 +176,9 @@ public class Engine {
         if(currentPlayer >= players.size()) {
             this.running = false; this.finished = true; letterGrid = null;
         } else this.letterGrid.generate(dices);
+    }
+
+    public Settings getSettings() {
+        return this.settings;
     }
 }

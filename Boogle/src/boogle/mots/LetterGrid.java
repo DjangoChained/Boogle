@@ -165,6 +165,14 @@ public class LetterGrid {
     public char letterAt(int x, int y) {
         return grid[x][y];
     }
+
+    public Object[][] toObjectArray() {
+        Object[][] result = new Object[grid.length][grid.length];
+        for(int i = 0; i < grid.length; i++)
+            for(int j = 0; j < grid[i].length; j++)
+                result[i][j] = grid[i][j];
+        return result;
+    }
     
     /**
      * Représentation textuelle de la grille.

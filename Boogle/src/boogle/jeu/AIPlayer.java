@@ -26,4 +26,7 @@ public class AIPlayer extends Player {
         super(name);
         this.brain = brain;
     }
+    public String askForInput(Engine e) {
+        return this.brain.getInput(this, e);
+    }
 }
