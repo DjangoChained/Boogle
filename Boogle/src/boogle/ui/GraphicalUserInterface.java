@@ -17,6 +17,7 @@
 package boogle.ui;
 
 import boogle.jeu.Engine;
+import boogle.jeu.HighscoresManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -48,6 +49,13 @@ public class GraphicalUserInterface extends UserInterface {
         this.scoresForm = new ScoresForm(e);
         this.gameForm = new GameForm(e);
         this.menuForm.onReadyToPlay(() -> { engine.newGame(4); gameForm.setVisible(true); });
+        this.gameForm.onGameEnd(() -> {
+            try { HighscoresManager.LookForNewHighscores(engine.getSettings().getHighscoresLocation(), engine.getPlayers()); }
+            catch (java.io.IOException i) { }
+            this.scoresForm.setVisible(true);
+        });
+        this.scoresForm.onHighscoresButton(() -> this.masterRaceForm.setVisible(true));
+        this.scoresForm.onBackButton(() -> this.menuForm.setVisible(true));
     }
     
     @Override
