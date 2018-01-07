@@ -1,0 +1,79 @@
+<project name="Boogle" default="prepare" basedir=".">
+	<description>
+		Fichier de build pour convertir un projet NetBeans en projet suivant
+		les directives spécifiées par le cahier des charges de Boogle :
+		https://www.iut-info.univ-lille1.fr/~lhoussai/gl/projets/long/pr-long.html
+	</description>
+	<target name="clean">
+		<delete dir="output" />
+	</target>
+	<target name="createfolders">
+		<mkdir dir="output" />
+		<mkdir dir="output/sources" />
+		<mkdir dir="output/doc" />
+		<mkdir dir="output/classes" />
+		<mkdir dir="output/manuel" />
+		<mkdir dir="output/config" />
+	</target>
+	<target name="copyfiles">
+		<copy todir="output">
+			<resources>
+				<file file="README.md" />
+				<file file="LICENSE" />
+				<file file="output-build.xml" />
+			</resources>
+		</copy>
+		<move file="output/output-build.xml" tofile="output/build.xml" />
+	</target>
+	<target name="copysources">
+		<copy todir="output/sources">
+			<fileset dir="Boogle/src">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="copymanual">
+		<copy todir="output/manuel">
+			<fileset dir="manuel" />
+		</copy>
+	</target>
+	<target name="copyconfig">
+		<copy todir="output/config">
+			<fileset dir="Boogle">
+				<include name="*.txt" />
+				<include name="*.csv" />
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="copyall" depends="createfolders,copyfiles,copysources,copymanual,copyconfig" />
+	<target name="compile" depends="createfolders,copysources">
+		<javac srcdir="output/sources" destdir="output/classes" includeAntRuntime="false" />
+	</target>
+	<target name="jar" depends="compile">
+		<jar destfile="output/Boogle.jar">
+			<fileset dir="output/classes" />
+			<manifest>
+				<attribute name="Main-Class" value="boogle.jeu.Main" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="doc" depends="createfolders,copysources">
+		<javadoc packagenames="boogle.*"
+			sourcepath="output/sources"
+			destdir="output/doc"
+			author="true"
+			version="true"
+			locale="fr_FR"
+			encoding="UTF-8"
+			windowtitle="Documentation de Boogle"
+			doctitle="Documentation de Boogle"
+			charset="UTF-8"
+			docencoding="UTF-8" />
+	</target>
+	<target name="prepare" depends="copyall,jar,doc" />
+	<target name="export" depends="prepare">
+		<tar compression="gzip" destfile="output.tar.gz" basedir="output" />
+	</target>
+	<target name="full" depends="clean,export" />
+</project>
