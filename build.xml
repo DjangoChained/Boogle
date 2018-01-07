@@ -6,6 +6,7 @@
 	</description>
 	<target name="clean">
 		<delete dir="output" />
+		<delete file="output.tar.gz" />
 	</target>
 	<target name="createfolders">
 		<mkdir dir="output" />
@@ -14,6 +15,7 @@
 		<mkdir dir="output/classes" />
 		<mkdir dir="output/manuel" />
 		<mkdir dir="output/config" />
+		<mkdir dir="output/jar" />
 	</target>
 	<target name="copyfiles">
 		<copy todir="output">
@@ -34,7 +36,7 @@
 	</target>
 	<target name="copymanual">
 		<copy todir="output/manuel">
-			<fileset dir="manuel" />
+			<fileset dir="manuel" includes="**/*" />
 		</copy>
 	</target>
 	<target name="copyconfig">
@@ -51,7 +53,10 @@
 		<javac srcdir="output/sources" destdir="output/classes" includeAntRuntime="false" />
 	</target>
 	<target name="jar" depends="compile">
-		<jar destfile="output/Boogle.jar">
+		<copy todir="output/jar">
+			<fileset dir="output/config" includes="*" />
+		</copy>
+		<jar destfile="output/jar/Boogle.jar">
 			<fileset dir="output/classes" />
 			<manifest>
 				<attribute name="Main-Class" value="boogle.jeu.Main" />

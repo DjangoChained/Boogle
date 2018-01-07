@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,21 @@ import javax.swing.JOptionPane;
 
 /**
  * Formulaire de menu principal.
+ *
  * @author rouchete
  */
 public class MenuForm extends javax.swing.JDialog {
 
     private final Engine engine;
     private Runnable readyToPlay;
-    
+
     /**
-     * Creates new form MenuForm
-     * @param engine Game engine to use
+     * Instancier une fenêtre de menu principal.
+     *
+     * @param engine Moteur de jeu à utiliser.
      */
     public MenuForm(Engine engine) {
-        super((Window)null);
+        super((Window) null);
         setModal(true);
         this.engine = engine;
         initComponents();
@@ -194,22 +196,38 @@ public class MenuForm extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Définir l'action à exécuter au clic du bouton de lancement de jeu. Ne
+     * sera pas exécuté si les joueurs saisis ne sont pas valides.
+     *
+     * @param r Action à exécuter au clic du bouton de lancement de jeu.
+     */
     public void onReadyToPlay(Runnable r) {
         this.readyToPlay = r;
     }
-    
+
+    /**
+     * Clic sur le bouton Quitter.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    /**
+     * Clic sur le bouton Jouer.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
         engine.clearPlayers();
         Stream.of(playerNameField1, playerNameField2, playerNameField3, playerNameField4, playerNameField5)
                 .filter(field -> !field.getText().trim().isEmpty())
                 .forEach(field -> engine.createPlayer(field.getText().trim()));
-        if(engine.getPlayers().size() < 1)
+        if (engine.getPlayers().size() < 1) {
             JOptionPane.showMessageDialog(this, "Au moins un nom de joueur doit être saisi.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        else {
+        } else {
             this.setVisible(false);
             readyToPlay.run();
         }

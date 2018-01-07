@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,15 @@ package boogle.jeu;
 
 /**
  * Décrit une intelligence artificielle utilisable par AIPlayer.
+ *
  * @author rouchete
  */
 public interface AIPlayerBrain {
+
     /**
-     * Obtenir un mot valide saisi par l'IA.
-     * Si "null" est renvoyé, l'IA termine son tour.
+     * Obtenir un mot valide saisi par l'IA. Si "null" est renvoyé, l'IA termine
+     * son tour.
+     *
      * @param p Joueur IA concerné.
      * @param e Moteur de jeu concerné.
      * @return Mot valide, ou null pour terminer le tour.

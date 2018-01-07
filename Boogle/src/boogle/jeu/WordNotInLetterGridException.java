@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,14 @@ package boogle.jeu;
 
 /**
  * Exception levée lorsque le mot saisi n'est pas dans la grille
+ *
  * @author waxinp
  */
 public class WordNotInLetterGridException extends WordInputException {
-    
-    public WordNotInLetterGridException() { }
-    
+
+    public WordNotInLetterGridException() {
+    }
+
     public WordNotInLetterGridException(String message) {
         super(message);
     }

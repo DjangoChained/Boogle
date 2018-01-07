@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package boogle.jeu;
 
 import java.io.FileInputStream;
@@ -25,54 +24,115 @@ import java.util.Properties;
 
 /**
  * Gestionnaire de configuration du jeu.
+ *
  * @author waxinp
  */
 public class Settings {
+
     private Properties propertiesLoader = null;
     private String filePath;
-    
+
+    /**
+     * Charger la configuration depuis un fichier.
+     *
+     * @param filePath Chemin du fichier à utiliser.
+     * @throws IOException
+     */
     public void loadFile(String filePath) throws IOException {
         this.filePath = filePath;
         this.propertiesLoader = new Properties();
         this.propertiesLoader.load(new FileInputStream(filePath));
     }
-    
+
+    /**
+     * Obtenir le chemin d'accès du fichier utilisé pour la configuration.
+     *
+     * @return Chemin d'accès du fichier utilisé pour la configuration.
+     */
     public String getFilePath() {
         return this.filePath;
     }
-    
-    public String get(String varName) throws IOException {
+
+    /**
+     * Obtenir un paramètre par son nom.
+     *
+     * @param varName Nom du paramètre.
+     * @return Valeur du paramètre, ou null si le paramètre n'existe pas.
+     */
+    public String get(String varName) {
         return this.propertiesLoader.getProperty(varName);
     }
-    
-    public String get(String varName, String defaultValue) throws IOException {
+
+    /**
+     * Obtenir un paramètre par son nom, et renvoyer une valeur par défaut s'il
+     * n'existe pas.
+     *
+     * @param varName Nom du paramètre.
+     * @param defaultValue Valeur par défaut en cas de paramètre inexistant.
+     * @return Valeur du paramètre, ou la valeur par défaut s'il n'existe pas.
+     */
+    public String get(String varName, String defaultValue) {
         return this.propertiesLoader.getProperty(varName, defaultValue);
     }
-    
+
+    /**
+     * Définir un paramètre.
+     *
+     * @param varName Nom du paramètre.
+     * @param var Nouvelle valeur du paramètre.
+     * @throws IOException
+     */
     public void set(String varName, Object var) throws IOException {
-        if (this.propertiesLoader == null) return;
+        if (this.propertiesLoader == null) {
+            return;
+        }
         this.propertiesLoader.put(varName, var.toString());
         FileOutputStream fos = new FileOutputStream(filePath);
         this.propertiesLoader.store(fos, null);
     }
-    
-    public int getWordMinSize() throws IOException {
+
+    /**
+     * Obtenir la taille minimale autorisée d'un mot.
+     *
+     * @return Taille minimale autorisée d'un mot.
+     */
+    public int getWordMinSize() {
         return Integer.parseInt(get("minimum-size", "3"));
     }
-    
-    public String getDicesLocation() throws IOException {
+
+    /**
+     * Obtenir l'emplacement du fichier de dés.
+     *
+     * @return Emplacement du fichier de dés.
+     */
+    public String getDicesLocation() {
         return get("dices");
     }
-    
-    public String getDictionaryLocation() throws IOException {
+
+    /**
+     * Obtenir l'emplacement du fichier de dictionnaire.
+     *
+     * @return Emplacement du fichier de dictionnaire.
+     */
+    public String getDictionaryLocation() {
         return get("dictionary");
     }
-    
-    public String getHighscoresLocation() throws IOException {
+
+    /**
+     * Obtenir l'emplacement du fichier de meilleurs scores.
+     *
+     * @return Emplacement du fichier de meilleurs scores.
+     */
+    public String getHighscoresLocation() {
         return get("highscores");
     }
-    
-    public int[] getPoints() throws IOException {
+
+    /**
+     * Obtenir les points associés aux longueurs des mots.
+     *
+     * @return Tableau du nombre de points par longueur de mot.
+     */
+    public int[] getPoints() {
         return Arrays.stream(get("points").split(",")).mapToInt(i -> Integer.parseInt(i)).toArray();
     }
 }

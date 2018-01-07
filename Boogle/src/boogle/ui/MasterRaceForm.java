@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,27 +23,33 @@ import javax.swing.table.TableModel;
 
 /**
  * Formulaire de menu des meilleurs scores.
- * @author lucidiot
+ *
+ * @author rouchete
  */
 public class MasterRaceForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form MasterRaceForm
+     * Créer une fenêtre de meilleurs scores.
      */
     public MasterRaceForm() {
         initComponents();
     }
 
+    /**
+     * Définir l'état de visibilité de la fenêtre.
+     *
+     * @param bln État de visibilité de la fenêtre.
+     */
     @Override
     public void setVisible(boolean bln) {
         super.setVisible(bln);
-        if(bln) {
+        if (bln) {
             masterRaceTable.setModel(getMasterRaceModel());
             masterRaceTable.getColumnModel().getColumn(0).setMaxWidth(30);
             masterRaceTable.getColumnModel().getColumn(2).setMaxWidth(70);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,16 +79,23 @@ public class MasterRaceForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Obtenir un modèle de JTable correspondant aux meilleurs scores.
+     *
+     * @return TableModel correspondant aux meilleurs scores.
+     */
     private TableModel getMasterRaceModel() {
-        return new javax.swing.table.DefaultTableModel(getMasterRaceData(), new String [] { "#", "Nom", "Score" }) {
-            Class[] types = new Class[] {
+        return new javax.swing.table.DefaultTableModel(getMasterRaceData(), new String[]{"#", "Nom", "Score"}) {
+            Class[] types = new Class[]{
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean[] { false, false, false };
+            boolean[] canEdit = new boolean[]{false, false, false};
+
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
@@ -90,13 +103,18 @@ public class MasterRaceForm extends javax.swing.JFrame {
         };
     }
 
+    /**
+     * Obtenir un tableau des meilleurs scores destiné à l'affichage.
+     *
+     * @return Tableau compatible avec un TableModel.
+     */
     private Object[][] getMasterRaceData() {
         PrimitiveIterator.OfInt counter = IntStream.iterate(1, i -> i + 1).iterator();
         return HighscoresManager.getMasterRace().stream().map(p -> {
-            return new Object[] {counter.nextInt(), p.getName(), p.getScore()};
+            return new Object[]{counter.nextInt(), p.getName(), p.getScore()};
         }).toArray(Object[][]::new);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable masterRaceTable;

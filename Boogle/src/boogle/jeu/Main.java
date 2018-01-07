@@ -15,24 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package boogle.jeu;
+
 import boogle.ui.*;
 import java.util.stream.Stream;
 
 /**
  * Classe principale.
+ *
  * @author rouchete et waxinp
  */
 public class Main {
 
     /**
      * Point d'entrée de l'application.
-     * @param args the command line arguments
+     *
+     * @param args Arguments de ligne de commande.
      */
     public static void main(String[] args) {
         Engine gameEngine = new Engine();
         UserInterface ui;
-        if(Stream.of(args).anyMatch(a -> a.toLowerCase().contains("std"))) ui = new StdUserInterface(gameEngine);
-        else ui = new GraphicalUserInterface(gameEngine);
+        if (Stream.of(args).anyMatch(a -> a.toLowerCase().contains("std"))) {
+            ui = new StdUserInterface(gameEngine);
+        } else {
+            ui = new GraphicalUserInterface(gameEngine);
+        }
         ui.start();
     }
 }
