@@ -166,10 +166,7 @@ public class StdUserInterface extends UserInterface {
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
         printPlayers(players, false);
-        // TODO: Refactoring pour isoler les meilleurs scores de l'interface
-        for (Player p : players){
-            if (HighscoresManager.isHighEnough(p.getScore())) HighscoresManager.addNewHighScore(p);
-        }
+        System.out.print(HighscoresManager.LookForNewHighscores(engine.getHighscoresLocation(), players));
         try {
             HighscoresManager.writeBestPlayers("highscores.txt");
         } catch (IOException ex) {

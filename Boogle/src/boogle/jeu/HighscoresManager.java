@@ -65,15 +65,22 @@ public class HighscoresManager {
      * des meilleurs scores par le nouveau si la liste est pleine.
      * @param p le joueur dont le score va être ajouté aux meilleurs scores
      */
-    public static void addNewHighScore(Player p){
+    public static String addNewHighScore(Player p){
         String result = "Félicitation à "+p.getName();
         if (bestPlayers.size() == MAX_HIGHSCORE){
             Player oldHighScore = removeLowestHighScore();
             result += " qui bat "+oldHighScore.getName()+" ("+oldHighScore.getScore()+" points)";
         }
         else result += " qui inscrit un nouveau record";
-        System.out.println(result + " avec "+p.getScore()+" points !");
         bestPlayers.add(p);
+        return result + " avec "+p.getScore()+" points !\n";
+    }
+    
+    public static String LookForNewHighscores(String pathToScores, ArrayList<Player> players) throws IOException{
+        String changes = "";
+        for(Player p : players)
+            if (HighscoresManager.isHighEnough(p.getScore())) changes += HighscoresManager.addNewHighScore(p);
+        return changes;
     }
     
     /**
