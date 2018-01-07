@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,16 @@
 package boogle.jeu;
 
 /**
- * Exception de base pour les exceptions liées aux saisies utilisateur dans Boogle.
- * @author lucidiot
+ * Exception de base pour les exceptions liées aux saisies utilisateur dans
+ * Boogle.
+ *
+ * @author rouchete
  */
 public abstract class WordInputException extends Exception {
-    public WordInputException() { }
+
+    public WordInputException() {
+    }
+
     public WordInputException(String message) {
         super(message);
     }

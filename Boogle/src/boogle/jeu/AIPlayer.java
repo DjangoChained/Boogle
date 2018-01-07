@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,30 @@ package boogle.jeu;
 
 /**
  * Décrit un joueur ordinateur utilisant une intelligence artificielle.
- * @author lucidiot
+ *
+ * @author rouchete
  */
 public class AIPlayer extends Player {
+
     protected AIPlayerBrain brain;
+
+    /**
+     * Instancier un joueur IA.
+     *
+     * @param name Nom du joueur.
+     * @param brain Intelligence artificielle à utiliser.
+     */
     public AIPlayer(String name, AIPlayerBrain brain) {
         super(name);
         this.brain = brain;
     }
+
+    /**
+     * Demander la saisie d'un mot à l'IA.
+     *
+     * @param e Moteur de jeu où récupérer les informations.
+     * @return Mot saisi par le joueur IA, ou null pour déclarer la fin du tour.
+     */
     public String askForInput(Engine e) {
         return this.brain.getInput(this, e);
     }

@@ -23,3 +23,6 @@ hs_err_pid*
 /Boogle/nbproject/private/
 /Boogle/dist/
 /Boogle/build/
+
+# Dossier de sortie du fichier de build
+/output/

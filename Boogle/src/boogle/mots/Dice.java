@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,18 @@ import java.util.Random;
 
 /**
  * Décrit un dé.
+ *
  * @author waxinp
  */
 public class Dice {
+
     private final char[] faces;
-    
+
+    /**
+     * Créer un nouveau dé.
+     *
+     * @param faces Chaîne de caractères représentant les faces du dé.
+     */
     public Dice(String faces) {
         this.faces = new char[faces.length()];
         int pos = 0;
@@ -36,20 +43,38 @@ public class Dice {
             this.faces[pos++] = faces.charAt(i);
         }
     }
-    
+
+    /**
+     * Charger les dés depuis un fichier de dés.
+     *
+     * @param pathToDices Chemin d'accès vers le fichier de dés.
+     * @return Tableau de dés chargés via le fichier.
+     * @throws IOException Erreur lors de l'accès au fichier.
+     */
     public static Dice[] loadDices(String pathToDices) throws IOException {
         int pos = 0;
         List<String> lines = Files.readAllLines(Paths.get(pathToDices));
         Dice[] dices = new Dice[lines.size()];
-        for (String line : lines)
+        for (String line : lines) {
             dices[pos++] = new Dice(line.replaceAll("[;,\t]", ""));
+        }
         return dices;
     }
 
+    /**
+     * Effectuer un lancer de dé.
+     *
+     * @return Face obtenue par le lancer du dé.
+     */
     public char roll() {
         return faces[new Random().nextInt(faces.length)];
     }
-    
+
+    /**
+     * Représentation textuelle d'un dé destinée au déboguage.
+     *
+     * @return Représentation textuelle du dé.
+     */
     @Override
     public String toString() {
         return String.valueOf(faces);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,14 @@ package boogle.jeu;
 
 /**
  * Exception levée lorsque le mot saisi est trop court
+ *
  * @author waxinp
  */
 public class WordTooShortException extends WordInputException {
-    public WordTooShortException() { }
-    
+
+    public WordTooShortException() {
+    }
+
     public WordTooShortException(String message) {
         super(message);
     }

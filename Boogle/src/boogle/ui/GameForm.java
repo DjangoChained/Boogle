@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,14 +27,17 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Fenêtre d'une partie.
+ *
  * @author rouchete
  */
 public class GameForm extends javax.swing.JFrame {
 
     private final Engine engine;
     private Runnable gameEnd;
+
     /**
      * Créer une fenêtre de jeu.
+     *
      * @param engine Moteur de jeu à utiliser.
      */
     public GameForm(Engine engine) {
@@ -42,17 +45,35 @@ public class GameForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    /**
+     * Définir l'action à exécuter en fin de partie.
+     *
+     * @param r Action à exécuter en fin de partie.
+     */
     public void onGameEnd(Runnable r) {
         this.gameEnd = r;
     }
-    
+
+    /**
+     * Mettre à jour les informations affichées dans la fenêtre. Le message de
+     * statut est défini au nom du joueur dont c'est le tour.
+     */
     private void refresh() {
-        if(!engine.isGameRunning() || !this.isVisible()) return;
+        if (!engine.isGameRunning() || !this.isVisible()) {
+            return;
+        }
         refresh(engine.getCurrentPlayer().getName() + ", c'est votre tour");
     }
 
+    /**
+     * Mettre à jour les informations affichées dans la fenêtre.
+     *
+     * @param message Message de statut à afficher.
+     */
     private void refresh(String message) {
-        if(!engine.isGameRunning() || !this.isVisible()) return;
+        if (!engine.isGameRunning() || !this.isVisible()) {
+            return;
+        }
         this.statusLabel.setText(message);
         // Liste des joueurs
         DefaultListModel pl = new DefaultListModel();
@@ -68,6 +89,7 @@ public class GameForm extends javax.swing.JFrame {
             public Class getColumnClass(int columnIndex) {
                 return java.lang.Character.class;
             }
+
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
@@ -75,12 +97,19 @@ public class GameForm extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Définir l'état de visibilité de la fenêtre.
+     *
+     * @param bln État de visibilité de la fenêtre.
+     */
     @Override
     public void setVisible(boolean bln) {
         super.setVisible(bln);
-        if(bln) refresh();
+        if (bln) {
+            refresh();
+        }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -222,30 +251,42 @@ public class GameForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Appui sur la touche Entrée dans le champ de saisie de mot.
+     *
+     * @param evt Événement associé à l'appui de la touche Entrée.
+     */
     private void onWordInput(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onWordInput
         String word = java.text.Normalizer.normalize(this.wordInputField.getText().trim().toLowerCase(), java.text.Normalizer.Form.NFD)
-                        .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
-                        .replaceAll("[^a-zA-Z]+", "");
-        if(word.isEmpty()) return;
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+                .replaceAll("[^a-zA-Z]+", "");
+        if (word.isEmpty()) {
+            return;
+        }
         try {
             engine.wordInput(word);
             String pluralizeWordScore = (engine.getScore(word) > 1) ? " points" : " point";
-            refresh(word.toUpperCase()+" : +"+engine.getScore(word)+pluralizeWordScore);
-        } catch(WordTooShortException ex){
+            refresh(word.toUpperCase() + " : +" + engine.getScore(word) + pluralizeWordScore);
+        } catch (WordTooShortException ex) {
             refresh("Ce mot est trop court");
-        } catch(WordNotInDictionaryException ex){
+        } catch (WordNotInDictionaryException ex) {
             refresh("Ce mot n'existe pas");
-        } catch(WordNotInLetterGridException ex){
+        } catch (WordNotInLetterGridException ex) {
             refresh("Ce mot n'est pas dans la grille");
-        } catch(WordAlreadyFoundException ex){
+        } catch (WordAlreadyFoundException ex) {
             refresh("Vous avez déjà trouvé ce mot");
         }
         this.wordInputField.setText("");
     }//GEN-LAST:event_onWordInput
 
+    /**
+     * Clic sur le bouton de fin de tour.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void endTurnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTurnButtonActionPerformed
         engine.endTurn();
-        if(engine.isGameFinished()) {
+        if (engine.isGameFinished()) {
             this.setVisible(false);
             gameEnd.run();
         } else {

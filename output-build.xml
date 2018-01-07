@@ -1,0 +1,40 @@
+<project name="Boogle" default="jar" basedir=".">
+	<description>
+		Fichier de build du projet Boogle.
+	</description>
+	<target name="clean">
+		<delete includeEmptyDirs="true">
+			<fileset dir="classes" includes="**/*" />
+			<fileset dir="doc" includes="**/*" />
+			<fileset dir="." includes="*.jar" />
+		</delete>
+	</target>
+	<target name="doc">
+		<javadoc packagenames="boogle.*"
+			sourcepath="sources"
+			destdir="doc"
+			author="true"
+			version="true"
+			locale="fr_FR"
+			encoding="UTF-8"
+			windowtitle="Documentation de Boogle"
+			doctitle="Documentation de Boogle"
+			charset="UTF-8"
+			docencoding="UTF-8" />
+	</target>
+	<target name="compile">
+		<javac srcdir="sources" destdir="classes" includeAntRuntime="false" />
+	</target>
+	<target name="jar" depends="compile">
+		<copy todir="jar">
+			<fileset dir="config" includes="*" />
+		</copy>
+		<jar destfile="jar/Boogle.jar">
+			<fileset dir="classes" />
+			<manifest>
+				<attribute name="Main-Class" value="boogle.jeu.Main" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="fullbuild" depends="clean,doc,jar" />
+</project>

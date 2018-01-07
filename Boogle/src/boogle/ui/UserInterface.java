@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 rouchete and waxinp
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ import boogle.jeu.Engine;
 
 /**
  * Décrit une interface utilisateur.
+ *
  * @author rouchete
  */
 public abstract class UserInterface {
@@ -28,15 +29,16 @@ public abstract class UserInterface {
      * Moteur de jeu utilisé par l'interface utilisateur.
      */
     protected Engine engine;
-    
+
     /**
      * Instancier une nouvelle interface utilisateur pour un moteur de jeu.
+     *
      * @param engine Moteur de jeu à utiliser.
      */
     public UserInterface(Engine engine) {
         this.engine = engine;
     }
-    
+
     /**
      * Démarrer l'interface utilisateur.
      */

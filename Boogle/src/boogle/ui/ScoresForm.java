@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 lucidiot
+ * Copyright (C) 2017 rouchete et waxinp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +25,17 @@ import javax.swing.table.TableModel;
 
 /**
  * Fenêtre de fin de partie.
+ *
  * @author rouchete
  */
 public class ScoresForm extends javax.swing.JFrame {
 
     private final Engine engine;
     private Runnable onHighscoresButton, onBackButton;
+
     /**
-     * Creates new form ScoresForm
+     * Instancier une fenêtre de scores de fin de partie.
+     *
      * @param e Moteur de jeu à utiliser.
      */
     public ScoresForm(Engine e) {
@@ -40,51 +43,85 @@ public class ScoresForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    /**
+     * Définir l'action à exécuter au clic du bouton "Meilleurs scores"
+     *
+     * @param r Action à exécuter.
+     */
     public void onHighscoresButton(Runnable r) {
         this.onHighscoresButton = r;
     }
-    
+
+    /**
+     * Définir l'action à exécuter au clic du bouton "Retour au menu"
+     *
+     * @param r Action à exécuter.
+     */
     public void onBackButton(Runnable r) {
         this.onBackButton = r;
     }
 
+    /**
+     * Définir l'état de visibilité de la fenêtre.
+     *
+     * @param bln État de visibilité de la fenêtre.
+     */
     @Override
     public void setVisible(boolean bln) {
         super.setVisible(bln);
-        if(bln) refresh();
+        if (bln) {
+            refresh();
+        }
     }
-    
+
+    /**
+     * Mettre à jour les informations affichées.
+     */
     public void refresh() {
-        if(!engine.isGameFinished()) return;
+        if (!engine.isGameFinished()) {
+            return;
+        }
         jTable1.setModel(getScoreModel());
         jTable1.getColumnModel().getColumn(0).setMaxWidth(30);
         jTable1.getColumnModel().getColumn(2).setMaxWidth(70);
         jLabel1.setText(engine.getPlayers().stream().sorted(Collections.reverseOrder()).findFirst().get().getName() + " remporte la partie !");
     }
-    
+
+    /**
+     * Obtenir un modèle pour une JTable listant les joueurs.
+     *
+     * @return TableModel listant les joueurs et leurs scores.
+     */
     private TableModel getScoreModel() {
-        return new javax.swing.table.DefaultTableModel(getScoreData(), new String [] { "#", "Nom", "Score" }) {
-            Class[] types = new Class[] {
+        return new javax.swing.table.DefaultTableModel(getScoreData(), new String[]{"#", "Nom", "Score"}) {
+            Class[] types = new Class[]{
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
+
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
         };
     }
-    
-    public Object[][] getScoreData() {
+
+    /**
+     * Obtenir les données de scores des joueurs de la partie.
+     *
+     * @return Tableau compatible avec un TableModel.
+     */
+    private Object[][] getScoreData() {
         PrimitiveIterator.OfInt counter = IntStream.iterate(1, i -> i + 1).iterator();
         return engine.getPlayers().stream().sorted(Collections.reverseOrder()).map(p -> {
-            return new Object[] {counter.nextInt(), p.getName(), p.getScore()};
+            return new Object[]{counter.nextInt(), p.getName(), p.getScore()};
         }).toArray(Object[][]::new);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -192,14 +229,29 @@ public class ScoresForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Clic du bouton Quitter.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Clic du bouton Meilleurs scores.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.onHighscoresButton.run();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Clic du bouton Retour au menu.
+     *
+     * @param evt Événement associé au clic.
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
         this.onBackButton.run();
