@@ -177,4 +177,8 @@ public class Engine {
             this.running = false; this.finished = true; letterGrid = null;
         } else this.letterGrid.generate(dices);
     }
+
+    public Settings getSettings() {
+        return this.settings;
+    }
 }

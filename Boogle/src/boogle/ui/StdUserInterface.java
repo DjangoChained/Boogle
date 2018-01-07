@@ -166,9 +166,9 @@ public class StdUserInterface extends UserInterface {
         ArrayList<Player> players = new ArrayList<>(engine.getPlayers());
         Collections.sort(players, Collections.reverseOrder());
         printPlayers(players, false);
-        System.out.print(HighscoresManager.LookForNewHighscores(engine.getHighscoresLocation(), players));
+        System.out.print(HighscoresManager.LookForNewHighscores(engine.getSettings().getHighscoresLocation(), players));
         try {
-            HighscoresManager.writeBestPlayers("highscores.txt");
+            HighscoresManager.writeBestPlayers(engine.getSettings().getHighscoresLocation());
         } catch (IOException ex) {
             System.out.println("Erreur lors de l'écriture des meilleurs scores");
         }
