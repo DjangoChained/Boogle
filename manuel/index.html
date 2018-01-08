@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Manuel utilisateur de Boogle</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Manuel utilisateur de Boogle</h1>
+            <h2>Table des matières</h2>
+            <ul>
+                <li><a href="#0">Règles du jeu</a></li>
+                <li><a href="#1">Utilisation en ligne de commande</a></li>
+                <li><a href="#2">Utilisation en interface graphique</a></li>
+                <li><a href="#3">Notes de développement</a></li>
+            </ul>
+            <a id="0"></a>
+            <h2>Règles du jeu</h2>
+            <ul>
+                <li>Le jeu de Boggle se joue de un à cinq joueurs.</li>
+                <li>Chaque joueur joue à tour de rôle.</li>
+                <li>Un joueur a un score et sa propre grille de 16 lettres organisées en 4 lignes et 4 colonnes.</li>
+                <li>Des dés spécifiques sont utilisés pour construire la grille de lettres à chaque nouveau tour.</li>
+                <li>Le joueur indique les mots qu'il peut trouver dans la grille avant de terminer son tour.</li>
+                <li>Les conditions de validité d'un mot sont les suivantes :<ul>
+                    <li>Sa longueur doit être au moins de trois lettres ;</li>
+                    <li>Le mot doit exister dans le dictionnaire du jeu ;</li>
+                    <li>Le mot ne doit pas avoir déjà été trouvé par le joueur ;</li>
+                    <li>Chaque lettre du mot doit être voisine à la suivante, dans l'ordre, dans la grille ;</li>
+                    <li>Une même lettre n'est pas utilisée plus d'une fois dans la grille.</li>
+                </ul></li>
+                <li>Une lettre est considérée comme voisine à une autre quand elle se trouve sur l'une des huit cases de la grille qui environnent l'autre lettre (côtés et diagonales).</li>
+                <li>Le score associé à chaque mot dépend de la longueur du mot :<ul>
+                    <li>Un point jusqu'à quatre lettres ;</li>
+                    <li>Deux points pour cinq lettres ;</li>
+                    <li>Trois points pour six lettres ;</li>
+                    <li>Cinq points pour sept lettres ;</li>
+                    <li>Onze points pour huit lettres et plus.</li>
+                </ul></li>
+                <li>Le score d'un joueur est déterminé par la somme des scores des mots qu'il a trouvé.</li>
+                <li>Lorsque tous les joueurs ont terminé leur tour, la partie s'achève et le palmarès est établi.</li>
+            </ul>
+            <a id="1"></a>
+            <h2>Utilisation en ligne de commande</h2>
+            <pre>  ____                    _      
+ |  _ \                  | |     
+ | |_) | ___   ___   __ _| | ___ 
+ |  _ < / _ \ / _ \ / _` | |/ _ \
+ | |_) | (_) | (_) | (_| | |  __/
+ |____/ \___/ \___/ \__, |_|\___|
+                     __/ |       
+                     |___/        
+----------------------------------
+</pre>
+            <a id="2"></a>
+            <h2>Utilisation en interface graphique</h2>
+            <p></p>
+            <a id="3"></a>
+            <h2>Notes de développement</h2>
+            <ul>
+                <li>Les classes intialement fournies ont été modifiées pour que tout soit en anglais ;</li>
+                <li>Le dictionnaire initialement fourni a été remplacé par un autre dictionnaire plus fiable ;</li>
+                <li>L'ensemble du projet a été réalisé sur NetBeans, pour faciliter le développement de l'interface graphique, avant d'être restructuré selon les demandes du projet avec l'aide d'un fichier de build Ant ;</li>
+                <li>Le projet NetBeans utilisé est disponible sur <a href="https://github.com/DjangoChained/Boogle">GitHub</a> ;</li>
+                <li>Le meilleur score obtenu en jouant durant les tests et le déboguage est de 43 points.</li>
+            </ul>
+        </div>
+    </body>
+</html>
