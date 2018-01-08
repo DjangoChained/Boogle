@@ -18,6 +18,7 @@ package boogle.ui;
 
 import boogle.jeu.HighscoresManager;
 import java.util.PrimitiveIterator;
+import java.util.Collections;
 import java.util.stream.IntStream;
 import javax.swing.table.TableModel;
 
@@ -110,7 +111,7 @@ public class MasterRaceForm extends javax.swing.JFrame {
      */
     private Object[][] getMasterRaceData() {
         PrimitiveIterator.OfInt counter = IntStream.iterate(1, i -> i + 1).iterator();
-        return HighscoresManager.getMasterRace().stream().map(p -> {
+        return HighscoresManager.getMasterRace().stream().sorted(Collections.reverseOrder()).map(p -> {
             return new Object[]{counter.nextInt(), p.getName(), p.getScore()};
         }).toArray(Object[][]::new);
     }

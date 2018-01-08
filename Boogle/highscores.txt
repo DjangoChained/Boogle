@@ -1,5 +1,3 @@
-lhoussaine,14
-lucidaine,13
-pierant,10
-lucidiot,7
-machin,5
+rouchete,43
+waxinp,15
+bob,5
