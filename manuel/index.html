@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Manuel utilisateur de Boogle</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Manuel utilisateur de Boogle</h1>
+            <h2>Table des matières</h2>
+            <ul>
+                <li><a href="#0">Règles du jeu</a></li>
+                <li><a href="#1">Utilisation en ligne de commande</a></li>
+                <li><a href="#2">Utilisation en interface graphique</a></li>
+                <li><a href="#3">Résolution des problèmes</a></li>
+                <li><a href="#4">Notes de développement</a></li>
+            </ul>
+            <a id="0"></a>
+            <h2>Règles du jeu</h2>
+            <ul>
+                <li>Le jeu de Boggle se joue de un à cinq joueurs.</li>
+                <li>Chaque joueur joue à tour de rôle.</li>
+                <li>Un joueur a un score et sa propre grille de 16 lettres organisées en 4 lignes et 4 colonnes.</li>
+                <li>Des dés spécifiques sont utilisés pour construire la grille de lettres à chaque nouveau tour.</li>
+                <li>Le joueur indique les mots qu'il peut trouver dans la grille avant de terminer son tour.</li>
+                <li>Les conditions de validité d'un mot sont les suivantes :<ul>
+                    <li>Sa longueur doit être au moins de trois lettres ;</li>
+                    <li>Le mot doit exister dans le dictionnaire du jeu ;</li>
+                    <li>Le mot ne doit pas avoir déjà été trouvé par le joueur ;</li>
+                    <li>Chaque lettre du mot doit être voisine à la suivante, dans l'ordre, dans la grille ;</li>
+                    <li>Une même lettre n'est pas utilisée plus d'une fois dans la grille.</li>
+                </ul></li>
+                <li>Une lettre est considérée comme voisine à une autre quand elle se trouve sur l'une des huit cases de la grille qui environnent l'autre lettre (côtés et diagonales).</li>
+                <li>Le score associé à chaque mot dépend de la longueur du mot :<ul>
+                    <li>Un point jusqu'à quatre lettres ;</li>
+                    <li>Deux points pour cinq lettres ;</li>
+                    <li>Trois points pour six lettres ;</li>
+                    <li>Cinq points pour sept lettres ;</li>
+                    <li>Onze points pour huit lettres et plus.</li>
+                </ul></li>
+                <li>Le score d'un joueur est déterminé par la somme des scores des mots qu'il a trouvé.</li>
+                <li>Lorsque tous les joueurs ont terminé leur tour, la partie s'achève et le palmarès est établi.</li>
+            </ul>
+            <a id="1"></a>
+            <h2>Utilisation en ligne de commande</h2>
+            <pre>  ____                    _      
+ |  _ \                  | |     
+ | |_) | ___   ___   __ _| | ___ 
+ |  _ < / _ \ / _ \ / _` | |/ _ \
+ | |_) | (_) | (_) | (_| | |  __/
+ |____/ \___/ \___/ \__, |_|\___|
+                     __/ |       
+                     |___/        
+----------------------------------
+</pre>
+            <a id="2"></a>
+            <h2>Utilisation en interface graphique</h2>
+            <p>Au démarrage du jeu en mode interface graphique, le menu principal s'affiche.</p>
+            <img src="1.png" alt="Menu principal de l'application" />
+            <p>Saisissez dans les champs les noms de vos joueurs. Pour n'avoir par exemple que trois joueurs, laissez deux des champs vides et ils ne seront pas pris en compte. Lorsque vous êtes prêt, cliquez sur « Jouer ».</p>
+            <blockquote>
+                Si l'erreur « Au moins un joueur doit être saisi » s'affiche, son message est assez explicite. Un champ de nom de joueur ne sera pris en compte que s'il contient des caractères autres que des espaces ou des tabulations.
+            </blockquote>
+            <p>Une fois le jeu démarré, la fenêtre de jeu s'affiche.</p>
+            <img src="2.png" alt="Fenêtre de jeu principale" />
+            <p>En haut de la fenêtre est affiché un message de statut, indiquant un changement de joueur lors d'un nouveau tour, la validation d'un mot avec le score obtenu, ou l'invalidation d'un mot et la raison de celle-ci :</p>
+            <ul>
+                <li><strong>[Nom], c'est votre tour</strong> : Le tour du joueur précédent est terminé, il faut maintenant se lever de la chaise et laisser un autre jouer à sa place.</li>
+                <li><strong>MOT : +2 points</strong> : Un mot a été saisi et validé ; le joueur gagne le nombre indiqué de points.</li>
+                <li><strong>Ce mot n'existe pas</strong> : Le mot n'est pas référencé dans le dictionnaire du jeu.</li>
+                <li><strong>Ce mot n'est pas dans la grille</strong> : Il n'existe aucun alignement de lettres dans la grille capable de former le mot saisi.</li>
+                <li><strong>Ce mot est trop court</strong> : Le mot saisi fait moins de trois lettres.</li>
+                <li><strong>Vous avez déjà trouvé ce mot</strong> : Le mot saisi fait déjà partie de la liste des mots trouvés par le joueur.</li>
+            </ul>
+            <p>Pour jouer, un joueur doit saisir dans le champ de texte en bas de l'écran un mot. Pour l'aider, la grille est affichée dans la partie de gauche de la fenêtre, et une liste des mots qu'il a déjà trouvé ainsi qu'une liste des joueurs de la partie avec leurs scores est affichée. Le nom du joueur actuellement en train de jouer est affiché en gras.</p>
+            <p>Il n'est pas obligatoire d'écrire les mots entièrement en majuscules ; les minuscules sont acceptées et la ponctuation et les espaces sont ignorés. Les accents sont également supprimés.</p>
+            <img src="3.png" alt="Exemple de partie en cours" />
+            <p>Pour terminer son tour, on clique sur le bouton « Fin de tour ». Lorsque le dernier joueur a terminé son tour, la fenêtre des résultats est affichée.</p>
+            <img src="4.png" alt="Fenêtre de résultats de partie" />
+            <p>Le bouton « Retour au menu » permet un retour au menu principal pour refaire une partie, le bouton « Quitter » permet de quitter le jeu, et le bouton » Meilleurs scores » affiche une fenêtre listant les meilleurs scores du jeu.</p>
+            <img src="5.png" alt="Fenêtre de meilleurs scores du jeu" />
+            <a id="3"></a>
+            <h2>Résolution des problèmes</h2>
+            <h3>Erreur au chargement</h3>
+            <p>Si une boîte de dialogue du type « Erreur au chargement » s'affiche au démarrage de l'interface graphique de Boogle, des fichiers de configuration du jeu sont manquants.</p>
+            <p>Le dossier où est démarré Boogle doit contenir un fichier de règles <code>rules-4x4.properties</code> et un fichier texte <code>highscores.txt</code>. Le fichier de règles indique également les noms de deux autres fichiers essentiels : le fichier de dés, par défaut <code>des-4x4.csv</code>, et le fichier de dictionnaire, par défaut <code>dict-fr.txt</code>.</p>
+            <h3>Rien ne s'affiche</h3>
+            <p>En interface graphique, si rien ne s'affiche et que le jeu ne se lance pas, un message d'erreur a dû être envoyé sur la sortie d'erreur. Il s'agit d'une erreur imprévue du développement. Contactez l'équipe de développement en leur indiquant ce message d'erreur.</p>
+            <h3>Temps de chargement anormalement long</h3>
+            <p>Le logiciel effectue le chargement du dictionnaire au démarrage. Dans le cas de l'interface en ligne de commande, le logo "Boogle" est affiché seul pendant le chargement. Dans le cas de l'interface graphique, rien n'est affiché avant le chargement complet.</p>
+            <p>Un disque dur lent, un fichier de dictionnaire trop gros, une mémoire vive ou un processeur trop lents peuvent expliquer ce phénomène.</p>
+            <h2>Notes de développement</h2>
+            <ul>
+                <li>Les classes intialement fournies ont été modifiées pour que tout soit en anglais ;</li>
+                <li>Le dictionnaire initialement fourni a été remplacé par un autre dictionnaire plus fiable ;</li>
+                <li>Des objets <code>AIPlayer</code> et <code>AIPlayerBrain</code> ont été créés dans <code>boogle.jeu</code> en vue de l'intégration d'intelligences artificielles, qui n'a finalement pas pu être réalisée ;</li>
+                <li>L'ensemble du projet a été réalisé sur NetBeans, pour faciliter le développement de l'interface graphique, avant d'être restructuré selon les demandes du projet avec l'aide d'un fichier de build Ant ;</li>
+                <li>Le projet NetBeans utilisé est disponible sur <a href="https://github.com/DjangoChained/Boogle">GitHub</a> ;</li>
+                <li>Le meilleur score obtenu en jouant durant les tests et le déboguage, sans assistance extérieure, ni bug, ni triche, est de 43 points.</li>
+            </ul>
+        </div>
+    </body>
+</html>

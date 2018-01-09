@@ -1,0 +1,42 @@
+body {
+    background-color: #DDD;
+    margin: 0;
+}
+
+#content {
+    background-color: white;
+    margin: 0 auto;
+    padding: 5rem 2em;
+    max-width: 800px;
+    min-height: calc(100vh - 5rem);
+    line-height: 1.6rem;
+    font-family: 'Helvetica', 'Helvetica Neue', Verdana, Geneva, Tahoma, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: monospace;
+    margin: 2.5rem 0 0.5rem;
+}
+
+pre {
+    background-color: #444;
+    color: white;
+    padding: 1em;
+    border-radius: 5px;
+    line-height: 1.4em;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+blockquote {
+    border-left: 3px solid #AAA;
+    color: #444;
+    padding-left: 1em;
+    margin-left: 1em;
+    font-style: italic;
+    font-size: 90%;
+    line-height: 1.4em;
+}

@@ -156,6 +156,7 @@ public class StdUserInterface extends UserInterface {
     public void printHighScores() {
         ArrayList<Player> players = new ArrayList<>(HighscoresManager.getMasterRace());
         if (players.size() > 0) {
+            Collections.sort(players, Collections.reverseOrder());
             System.out.println("Les meilleurs scores sont : ");
             printPlayers(players, true);
         } else {
