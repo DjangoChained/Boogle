@@ -25,3 +25,18 @@ pre {
     border-radius: 5px;
     line-height: 1.4em;
 }
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+blockquote {
+    border-left: 3px solid #AAA;
+    color: #444;
+    padding-left: 1em;
+    margin-left: 1em;
+    font-style: italic;
+    font-size: 90%;
+    line-height: 1.4em;
+}
