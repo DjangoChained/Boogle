@@ -45,6 +45,7 @@
             </ul>
             <a id="1"></a>
             <h2>Utilisation en ligne de commande</h2>
+            <p>Au démarrage du jeu en ligne de commande, les meilleurs scores son affichés si il y en a.</p>
             <pre>  ____                    _      
  |  _ \                  | |     
  | |_) | ___   ___   __ _| | ___ 
@@ -54,22 +55,101 @@
                      __/ |       
                      |___/        
 ----------------------------------
+
+Les meilleurs scores sont:
+1. Rouchete avec 43 points
+2. Pierant avec 17 points
+3. Michel avec 16 points
+4. Alain avec 14 points
+5. Laura avec 13 points
+6. Renée avec 10 points
+7. Simon avec 9 points
+8. Jean avec 8 points
+9. Caroline avec 6 points
+10. Daniel avec 5 points
+
+Combien de joueurs ? (1 à 5) :
 </pre>
-            <p>Au démarrage du jeu en ligne de commande, les meilleurs scores son affichés si il y en a.</p>
-            <img src="std1.png" alt="Démarrage en ligne de commande" />
             <p>Le nombre de joueurs est ensuite demandé, puis un nom est demandé pour chaque joueur.</p>
             <p>Lorsque les noms de tout les joueurs ont été renseignés, le tour du premier joueur commence. La grille de lettres est affichée et le joueur peut écrire ses propositions de mots ou entrer "stop" pour mettre fin à son tour de jeu.</p>
-            <img src="std2.png" alt="Début d'une partie" />
+            <pre>
+            Combien de joueurs ? (1 à 5) : 2
+            Entrez le nom du 1er joueur : Lucien
+            Entrez le nom du 2ème joueur : Marie
+
+            Lucien, c'est à vous de jouer !
+
+            EIMI
+            RFSD
+            OREA
+            EYOA
+
+            Proposez un mot ou "stop" pour arrêter votre tour :
+            </pre>
             <p>Pour chaque mot trouvé, le joueur est informé du nombre de points qu'il gagne pour ce mot et de son score total.</p>
-            <img src="std3.png" alt="Mots trouvés" />
+            <pre>
+            Proposez un mot ou "stop" pour arrêter votre tour : ban
+            Bravo, vous gagnez 1 point ! Vous totalisez 1 point
+            </pre>
             <p>Lorsqu'un mot entré par le joueur n'est pas acceptable, la raison lui est indiquée. L'image ci-dessous liste toute les erreurs d'entrée que peut rencontrer un joueur.</p>
-            <img src="std7.png" alt="Erreurs d'entrée utilisateur" />
+            <pre>
+            Proposez un mot ou "stop" pour arrêter votre tour : bel
+            Bravo, vous gagnez 1 point ! Vous totalisez 1 point
+            Proposez un mot ou "stop" pour arrêter votre tour : bel
+            Vous avez déjà trouvé ce mot
+            Proposez un mot ou "stop" pour arrêter votre tour : le
+            Ce mot est trop court
+            Proposez un mot ou "stop" pour arrêter votre tour : isa
+            Ce mot n'existe pas
+            Proposez un mot ou "stop" pour arrêter votre tour : bonjour
+            Ce mot n'est pas dans la grille
+            </pre>
             <p>Un joueur peut afficher la grille de lettres à tout moment en appuyant sur la touche "entrée"</p>
-            <img src="std4.png" alt="Afficher à nouveau la grille de lettres" />
+            <pre>
+            Proposez un mot ou "stop" pour arrêter votre tour : ban
+            Bravo, vous gagnez 1 point ! Vous totalisez 1 points
+            Proposez un mot ou "stop" pour arrêter votre tour : par
+            Bravo, vous gagnez 1 point ! Vous totalisez 2 points
+            Proposez un mot ou "stop" pour arrêter votre tour : pan
+            Bravo, vous gagnez 1 point ! Vous totalisez 3 points
+            Proposez un mot ou "stop" pour arrêter votre tour : nue
+            Bravo, vous gagnez 1 point ! Vous totalisez 4 points
+            Proposez un mot ou "stop" pour arrêter votre tour : une
+            Bravo, vous gagnez 1 point ! Vous totalisez 5 points
+            Proposez un mot ou "stop" pour arrêter votre tour : vue
+            Bravo, vous gagnez 1 point ! Vous totalisez 6 points
+            Proposez un mot ou "stop" pour arrêter votre tour : van
+            Bravo, vous gagnez 1 point ! Vous totalisez 7 points
+            Proposez un mot ou "stop" pour arrêter votre tour : mou
+            Bravo, vous gagnez 1 point ! Vous totalisez 8 points
+            Proposez un mot ou "stop" pour arrêter votre tour :
+            NVPR
+            UEAN
+            OONA
+            EUMB
+            </pre>
             <p>Quand un joueur entre le mot "stop", le tour du prochain joueur démarre.</p>
-            <img src="std5.png" alt="Fin de tour" />
+            <pre>
+            Proposez un mot ou "stop" pour arrêter votre tour : stop
+
+            Marie, c'est à vous de jouer !
+
+            NGMR
+            LIRN
+            TOAT
+            AGMI
+            </pre>
             <p>Lorsque tout les joueurs ont fini leur tour, la partie s'arrête. Le palmarès de la partie ainsi que les nouveaux records établis au cours de la partie sont alors affichés.</p>
-            <img src="std6.png" alt="Fin de la partie" />
+            <pre>
+            Proposez un mot ou "stop" pour arrêter votre tour : stop
+            La partie est terminée !
+
+            Voici le palmarès :
+            1. Lucien avec 8 points et 8 mots trouvés
+            2. Marie avec 0 points et 0 mot trouvé
+
+            Félicitations à Lucien qui bat Daniel (5 points) avec 8 points !
+            </pre>
             <a id="2"></a>
             <h2>Utilisation en interface graphique</h2>
             <p>Au démarrage du jeu en mode interface graphique, le menu principal s'affiche.</p>
