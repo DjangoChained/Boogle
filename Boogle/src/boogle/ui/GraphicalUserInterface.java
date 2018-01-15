@@ -63,6 +63,7 @@ public class GraphicalUserInterface extends UserInterface {
         this.gameForm.onGameEnd(() -> {
             try {
                 HighscoresManager.LookForNewHighscores(engine.getSettings().getHighscoresLocation(), engine.getPlayers());
+                HighscoresManager.writeBestPlayers(engine.getSettings().getHighscoresLocation());
             } catch (java.io.IOException i) {
             }
             this.scoresForm.setVisible(true);
