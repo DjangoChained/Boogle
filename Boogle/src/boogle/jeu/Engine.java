@@ -83,7 +83,7 @@ public class Engine {
         assert 0 < players.size() && players.size() < 5;
         this.letterGrid = new LetterGrid(gridSize);
         this.currentPlayer = -1;
-        running = true;
+        running = true; finished = false;
         endTurn();
     }
 
